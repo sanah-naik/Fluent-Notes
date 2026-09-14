@@ -68,6 +68,12 @@ function createWindow() {
     if (mainWindow) mainWindow.minimize();
   });
 
+  ipcMain.on('set-always-on-top', (event, flag) => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.setAlwaysOnTop(Boolean(flag), flag ? 'screen-saver' : 'normal');
+    }
+  });
+
   // Resolves safe writable storage path across Development, Portable EXE, and Installed Windows package
   function getStoragePath(filename) {
     if (process.env.PORTABLE_EXECUTABLE_DIR) {

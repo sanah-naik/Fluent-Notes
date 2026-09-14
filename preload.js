@@ -11,6 +11,9 @@ contextBridge.exposeInMainWorld('electronAPI', {
   minimizeApp: () => {
     ipcRenderer.send('app-minimize');
   },
+  setAlwaysOnTop: (flag) => {
+    ipcRenderer.send('set-always-on-top', flag);
+  },
   onNewNoteTrigger: (callback) => {
     ipcRenderer.on('trigger-new-note', () => callback());
   },

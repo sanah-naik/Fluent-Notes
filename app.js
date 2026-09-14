@@ -175,10 +175,26 @@
     if (winEdgeDock) {
       winEdgeDock.classList.remove('dock-left', 'dock-right');
       winEdgeDock.classList.add(`dock-${side}`);
+      if (side === 'left') {
+        winEdgeDock.style.setProperty('left', '0px', 'important');
+        winEdgeDock.style.setProperty('right', 'auto', 'important');
+        winEdgeDock.style.setProperty('align-items', 'flex-start', 'important');
+      } else {
+        winEdgeDock.style.setProperty('right', '0px', 'important');
+        winEdgeDock.style.setProperty('left', 'auto', 'important');
+        winEdgeDock.style.setProperty('align-items', 'flex-end', 'important');
+      }
     }
     if (dockExpandPill) {
       dockExpandPill.classList.remove('dock-left', 'dock-right');
       dockExpandPill.classList.add(`dock-${side}`);
+      if (side === 'left') {
+        dockExpandPill.style.setProperty('left', '0px', 'important');
+        dockExpandPill.style.setProperty('right', 'auto', 'important');
+      } else {
+        dockExpandPill.style.setProperty('right', '0px', 'important');
+        dockExpandPill.style.setProperty('left', 'auto', 'important');
+      }
     }
     if (btnToggleDockSide) {
       btnToggleDockSide.title = side === 'left' ? 'Move Dock to Right Edge' : 'Move Dock to Left Edge';
@@ -312,6 +328,7 @@
       appState.dockSide = newSide;
       saveAppState();
       playFluentSound('click');
+      showEditorSaveToast(newSide === 'left' ? '⇄ Dock moved to Left Edge' : '⇄ Dock moved to Right Edge');
     });
   }
 
@@ -2518,10 +2535,16 @@
     const btnDockPin = document.getElementById('btn-dock-pin');
     let isAlwaysOnTop = true;
     if (btnDockPin) {
-      btnDockPin.addEventListener('click', () => {
+      btnDockPin.addEventListener('click', (e) => {
+        e.stopPropagation();
         isAlwaysOnTop = !isAlwaysOnTop;
         btnDockPin.classList.toggle('active', isAlwaysOnTop);
+        btnDockPin.title = isAlwaysOnTop ? 'Always On Top: Pinned (Click to unpin)' : 'Always On Top: Unpinned (Click to pin)';
+        if (window.electronAPI && window.electronAPI.setAlwaysOnTop) {
+          window.electronAPI.setAlwaysOnTop(isAlwaysOnTop);
+        }
         playFluentSound('click');
+        showEditorSaveToast(isAlwaysOnTop ? '📌 Pinned: Always on top' : '🔓 Unpinned: Normal desktop window');
       });
     }
 

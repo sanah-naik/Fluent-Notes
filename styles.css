@@ -2237,26 +2237,38 @@ body.native-widget-mode #win-edge-dock.is-custom-top {
   transform: scale(1.1);
 }
 
-/* Left Edge Dock Support (Direct element selector for maximum reliability) */
-#win-edge-dock.dock-left,
-body.dock-side-left #win-edge-dock {
+/* Left Edge Dock Support (Ultra-high specificity so it always moves to the left edge) */
+body.native-widget-mode #win-edge-dock.dock-left,
+body.native-widget-mode.dock-side-left #win-edge-dock,
+body.dock-side-left #win-edge-dock,
+#win-edge-dock.dock-left {
   right: auto !important;
   left: 0 !important;
   align-items: flex-start !important;
 }
 
-#win-edge-dock.dock-left .dock-header {
+#win-edge-dock.dock-left .dock-header,
+body.dock-side-left #win-edge-dock .dock-header {
   justify-content: flex-start !important;
   padding-left: 4px !important;
   padding-right: 0 !important;
 }
 
-#win-edge-dock.dock-left .dock-tab-list {
+#win-edge-dock.dock-left .dock-footer,
+body.dock-side-left #win-edge-dock .dock-footer {
+  align-items: flex-start !important;
+  padding-left: 4px !important;
+  padding-right: 0 !important;
+}
+
+#win-edge-dock.dock-left .dock-tab-list,
+body.dock-side-left #win-edge-dock .dock-tab-list {
   padding-left: 0 !important;
   padding-right: 12px !important;
 }
 
-#win-edge-dock.dock-left .dock-tab-item {
+#win-edge-dock.dock-left .dock-tab-item,
+body.dock-side-left #win-edge-dock .dock-tab-item {
   border-radius: 0 8px 8px 0 !important;
   border-left: none !important;
   border-right: 1px solid rgba(0, 0, 0, 0.14) !important;
@@ -2264,17 +2276,22 @@ body.dock-side-left #win-edge-dock {
 }
 
 #win-edge-dock.dock-left .dock-tab-item:hover,
-#win-edge-dock.dock-left .dock-tab-item.active-peek {
+#win-edge-dock.dock-left .dock-tab-item.active-peek,
+body.dock-side-left #win-edge-dock .dock-tab-item:hover,
+body.dock-side-left #win-edge-dock .dock-tab-item.active-peek {
   transform: translateX(8px) !important;
   box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.28) !important;
 }
 
+body.dock-side-left #peek-card,
+body.native-widget-mode.dock-side-left #peek-card,
 #win-edge-dock.dock-left ~ #peek-card {
   left: 48px !important;
   right: auto !important;
   transform-origin: left center !important;
 }
 
+body.dock-side-left #dock-search-popup,
 #win-edge-dock.dock-left #dock-search-popup {
   left: 46px !important;
   right: auto !important;
