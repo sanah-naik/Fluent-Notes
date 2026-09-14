@@ -214,6 +214,7 @@
   function collapseDock() {
     isDockCollapsed = true;
     winEdgeDock.classList.add('collapsed');
+    winEdgeDock.style.transform = '';
     hidePeekCard();
     if (dockExpandPill) dockExpandPill.classList.remove('hidden');
     if (window.electronAPI && window.electronAPI.isElectron) {
@@ -228,7 +229,15 @@
   function expandDock() {
     isDockCollapsed = false;
     winEdgeDock.classList.remove('collapsed');
+    if (appState.dockTop) {
+      winEdgeDock.style.transform = 'none';
+    } else {
+      winEdgeDock.style.transform = '';
+    }
     if (dockExpandPill) dockExpandPill.classList.add('hidden');
+    if (window.electronAPI && window.electronAPI.isElectron) {
+      window.electronAPI.setIgnoreMouseEvents(false);
+    }
     appState.isDockCollapsed = false;
     saveAppState();
     playFluentSound('click');
@@ -309,14 +318,22 @@
         window.electronAPI.setIgnoreMouseEvents(false);
       }
     });
+    btnDockCollapse.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+    });
     btnDockCollapse.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       collapseDock();
     });
   }
 
   if (dockExpandPill) {
+    dockExpandPill.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+    });
     dockExpandPill.addEventListener('click', (e) => {
+      e.preventDefault();
       e.stopPropagation();
       expandDock();
     });
