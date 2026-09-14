@@ -924,9 +924,20 @@
     // Calculate position relative to tab
     const rect = tabElement.getBoundingClientRect();
     const peekTop = Math.max(60, Math.min(window.innerHeight - 340, rect.top - 16));
-    const peekRight = Math.max(42, window.innerWidth - rect.left + 10);
-    peekCard.style.top = `${peekTop}px`;
-    peekCard.style.right = `${peekRight}px`;
+
+    if (currentDockSide === 'left') {
+      const peekLeft = Math.round(rect.right + 10);
+      peekCard.style.top = `${peekTop}px`;
+      peekCard.style.setProperty('left', `${peekLeft}px`, 'important');
+      peekCard.style.setProperty('right', 'auto', 'important');
+      peekCard.style.setProperty('transform-origin', 'left center', 'important');
+    } else {
+      const peekRight = Math.max(42, window.innerWidth - rect.left + 10);
+      peekCard.style.top = `${peekTop}px`;
+      peekCard.style.setProperty('right', `${peekRight}px`, 'important');
+      peekCard.style.setProperty('left', 'auto', 'important');
+      peekCard.style.setProperty('transform-origin', 'right center', 'important');
+    }
 
     // Populate peek content
     peekCategoryTag.className = 'peek-category-badge';
@@ -2723,6 +2734,7 @@
 
   // --- Initialization ---
   loadNotes();
+  applyDockSide(currentDockSide);
   renderDockTabs();
   updateSoundUI();
   setupNativeWidgetMode();
