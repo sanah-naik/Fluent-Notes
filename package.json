@@ -1,0 +1,22 @@
+{
+  "name": "windows11-fluent-sticky-notes",
+  "version": "1.0.0",
+  "description": "Windows 11 Fluent Edge-Docked Sticky Notes Widget",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "web": "python -m http.server 8080"
+  },
+  "keywords": [
+    "sticky-notes",
+    "windows-11",
+    "fluent-design",
+    "widget",
+    "electron"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^44.3.0"
+  }
+}

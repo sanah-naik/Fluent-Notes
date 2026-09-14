@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky Notes · Windows 11 Fluent</title>
+  <meta name="description" content="Modern Windows 11 Fluent Design edge-docked sticky notes tool with Mica glassmorphism, instant slide-out peek, and seamless task management.">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Preload fonts: Segoe UI is native on Windows, with fallback to Inter/sans-serif -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    if (window.location.protocol === 'file:' || window.location.search.includes('widget')) {
+      document.documentElement.classList.add('native-widget-mode');
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('native-widget-mode');
+      });
+    }
+  </script>
+</head>
+<body class="theme-dark wallpaper-bloom-dark">
+
+  <!-- Desktop Environment Wrapper (Simulates Windows 11 Desktop or Clean Overlay) -->
+  <div id="desktop-container" class="desktop-container">
+    
+    <!-- Top Windows 11 Demo Bar (Utility & Customization Controls) -->
+    <header class="win-topbar" id="win-topbar">
+      <div class="win-topbar-left">
+        <div class="win-badge">
+          <svg class="win-logo-icon" viewBox="0 0 88 88" width="14" height="14">
+            <path fill="currentColor" d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.016 46.135zM40.97 4.135L87.973 0v41.327l-47.003.3zm47.003 41.796V88L40.97 81.396V45.727z"/>
+          </svg>
+          <span class="win-badge-title">Sticky Notes</span>
+          <span class="win-badge-pill">Fluent Edge</span>
+        </div>
+      </div>
+
+      <div class="win-topbar-center">
+        <!-- Search & Filter Filter Input -->
+        <div class="fluent-search-box">
+          <svg class="icon-search" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="notes-search-input" placeholder="Search notes... (Ctrl + F)" autocomplete="off">
+          <span id="notes-count-badge" class="search-count-badge">4</span>
+        </div>
+      </div>
+
+      <div class="win-topbar-right">
+        <!-- Wallpaper Switcher Dropdown -->
+        <div class="topbar-btn-group">
+          <button id="btn-theme-toggle" class="fluent-action-btn" title="Toggle Windows Theme (Dark / Light)" aria-label="Toggle Theme">
+            <svg id="icon-theme-dark" class="action-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg id="icon-theme-light" class="action-icon hidden" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <span class="btn-text">Theme</span>
+          </button>
+
+          <button id="btn-wallpaper-toggle" class="fluent-action-btn" title="Change Desktop Backdrop" aria-label="Change Backdrop">
+            <svg class="action-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            <span class="btn-text">Wallpaper</span>
+          </button>
+
+          <button id="btn-sound-toggle" class="fluent-action-btn" title="Toggle Fluent Haptics / Audio" aria-label="Toggle Sound">
+            <svg id="icon-sound-on" class="action-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <svg id="icon-sound-off" class="action-icon hidden" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </button>
+
+          <button id="btn-reset-demo" class="fluent-action-btn" title="Restore sample notes" aria-label="Reset Samples">
+            <svg class="action-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="1 4 1 10 7 10"></polyline>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+            </svg>
+            <span class="btn-text">Reset</span>
+          </button>
+
+          <button id="btn-widget-toggle" class="fluent-action-btn" title="Toggle Clean Transparent Widget Overlay" aria-label="Widget Mode">
+            <svg class="action-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <span class="btn-text">Widget Mode</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Desktop Active Area (For pinned floating notes) -->
+    <main class="desktop-workspace" id="desktop-workspace">
+      <!-- Pinned notes will float here if user pins them to desktop -->
+      <div id="pinned-notes-container" class="pinned-notes-layer"></div>
+
+      <!-- Welcome / Guide Toast in center of screen if no notes or on first load -->
+      <div class="fluent-instruction-badge" id="instruction-badge">
+        <div class="instruction-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+        <div class="instruction-content">
+          <strong>Edge-Docked Sticky Notes</strong>
+          <span>Hover or pull the tabs along the right edge &rarr; Click <strong>+</strong> to add a new note</span>
+        </div>
+        <button id="btn-dismiss-badge" class="fluent-icon-btn small" title="Dismiss">✕</button>
+      </div>
+    </main>
+
+    <!-- Fluent Undo Delete Toast Notification -->
+    <div id="undo-toast" class="fluent-toast hidden" role="status" aria-live="polite">
+      <div class="toast-content">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+        <span id="undo-toast-message">Note deleted</span>
+      </div>
+      <button id="btn-undo-delete" class="toast-action-btn">Undo</button>
+      <button id="btn-toast-dismiss" class="fluent-icon-btn small">✕</button>
+    </div>
+
+    <!-- Minimized Right Edge Bezel Indicator (Vertical multi-colored indicator strip) -->
+    <div id="edge-stack-indicator" class="edge-stack-indicator" title="Sticky notes docked">
+      <!-- Colored dots dynamically rendered from active notes -->
+    </div>
+
+    <!-- Right Screen Border: Docked Tab Strip -->
+    <aside class="win-edge-dock" id="win-edge-dock" aria-label="Docked Sticky Notes">
+      <!-- Notes Tab List (Rendered dynamically) -->
+      <div class="dock-tab-list" id="dock-tab-list">
+        <!-- Rendered items like OFFICE, GROCERI, HOLD, SIDE-PRO -->
+      </div>
+
+      <!-- Quick Search Popover Anchor -->
+      <div id="dock-search-popup" class="dock-search-popup hidden">
+        <div class="search-input-row">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="dock-search-input" placeholder="Filter notes..." autocomplete="off">
+          <button id="btn-dock-search-close" class="fluent-icon-btn small" title="Close Search">✕</button>
+        </div>
+        <!-- Tag Filter Chips -->
+        <div class="dock-tag-chips" id="dock-tag-chips">
+          <button class="tag-chip active" data-tag="all">All</button>
+          <button class="tag-chip tag-work" data-tag="work">💼 Work</button>
+          <button class="tag-chip tag-personal" data-tag="personal">🏠 Personal</button>
+          <button class="tag-chip tag-urgent" data-tag="urgent">⚡ Urgent</button>
+          <button class="tag-chip tag-ideas" data-tag="ideas">💡 Ideas</button>
+        </div>
+      </div>
+
+      <!-- Floating Action Buttons (Fluent Design) -->
+      <div class="dock-footer">
+        <button id="btn-dock-search" class="win-fluent-fab mini" title="Quick Search" aria-label="Search Notes">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <button id="btn-add-note" class="win-fluent-fab" title="Create Note (Ctrl + N)" aria-label="Create Note">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </button>
+
+        <button id="btn-dock-pin" class="win-fluent-fab mini active" title="Toggle Always On Top" aria-label="Always On Top">
+          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="17" x2="12" y2="22"></line>
+            <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9V5h1a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1v7.55l-1.78.9A2 2 0 0 0 5 15.24V17z"></path>
+          </svg>
+        </button>
+
+        <button id="btn-dock-sound" class="win-fluent-fab mini" title="Sound Muted (Click to Unmute)" aria-label="Toggle Sound">
+          <svg id="dock-icon-sound-off" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+          <svg id="dock-icon-sound-on" class="hidden" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+        </button>
+
+        <button id="btn-dock-exit" class="win-fluent-fab mini danger" title="Exit Widget (Ctrl + Shift + Q)" aria-label="Exit Widget">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Floating Slide-Out Peek Card (Shown when hovering over an edge tab) -->
+    <div id="peek-card" class="peek-card-container hidden" role="tooltip">
+      <div class="fluent-peek-card" id="peek-card-inner">
+        <div class="peek-card-header">
+          <div class="peek-title-group">
+            <span class="peek-category-badge" id="peek-category-tag">NOTE</span>
+            <h3 class="peek-title" id="peek-title">Title</h3>
+          </div>
+          <div class="peek-quick-actions">
+            <button id="btn-peek-pin" class="fluent-icon-btn" title="Pin to Desktop" aria-label="Pin to Desktop">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="17" x2="12" y2="22"></line>
+                <path d="M5 17h14v-1.76a2 2 0 0 0-1.11-1.79l-1.78-.9V5h1a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1h1v7.55l-1.78.9A2 2 0 0 0 5 15.24V17z"></path>
+              </svg>
+            </button>
+            <button id="btn-peek-edit" class="fluent-icon-btn" title="Edit in Full Window" aria-label="Edit in Full Window">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </button>
+            <button id="btn-peek-delete" class="fluent-icon-btn danger" title="Delete Note" aria-label="Delete Note">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="peek-card-body" id="peek-body">
+          <!-- Text and bullet items -->
+        </div>
+
+        <div class="peek-card-footer">
+          <span class="peek-timestamp" id="peek-timestamp">Updated just now</span>
+          <span class="peek-click-hint">Click tab to open</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Windows 11 Fluent Note Editor Dialog / Modal Window -->
+    <div id="editor-overlay" class="editor-overlay hidden" aria-modal="true" role="dialog">
+      <div class="fluent-window" id="editor-window">
+        
+        <!-- Windows 11 Fluent Caption Bar matching reference video -->
+        <div class="win-caption-bar" id="editor-caption-bar">
+          <div class="win-caption-left">
+            <span class="caption-dots-group">
+              <span class="caption-dot dot-close" id="btn-caption-close" title="Close"></span>
+              <span class="caption-dot dot-minimize" id="btn-caption-minimize" title="Minimize"></span>
+            </span>
+            <!-- Live editable title input -->
+            <input type="text" id="note-title-input" class="win-editable-title" placeholder="Untitled note" maxlength="32" spellcheck="false">
+          </div>
+
+          <div class="win-caption-controls">
+            <span id="save-status-indicator" class="win-save-badge" title="Disk sync status">
+              <span class="status-dot"></span>
+              <span class="status-text">Saved</span>
+            </span>
+            <button id="btn-favorite-note" class="win-caption-btn utility" title="Favorite / Star note" aria-label="Favorite">
+              <svg id="icon-star-outline" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <svg id="icon-star-filled" class="hidden" viewBox="0 0 24 24" width="13" height="13" fill="#fbc02d">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </button>
+            <button id="btn-editor-sound-toggle" class="win-caption-btn utility" title="Sound Muted (Click to Unmute)" aria-label="Toggle Sound">
+              <svg id="editor-icon-sound-off" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+              </svg>
+              <svg id="editor-icon-sound-on" class="hidden" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Note Editing Canvas -->
+        <div class="win-editor-content">
+          <!-- Formatting Fluent Toolbar (Authentic Windows 11 Sticky Notes) -->
+          <div class="win-editor-microbar" role="toolbar" aria-label="Text formatting">
+            <!-- Bold -->
+            <button id="btn-format-bold" class="fluent-format-icon-btn" title="Bold (Ctrl + B)" aria-label="Bold">
+              <span class="format-glyph-bold">B</span>
+            </button>
+            <!-- Italic -->
+            <button id="btn-format-italic" class="fluent-format-icon-btn" title="Italic (Ctrl + I)" aria-label="Italic">
+              <span class="format-glyph-italic">I</span>
+            </button>
+            <!-- Underline -->
+            <button id="btn-format-underline" class="fluent-format-icon-btn" title="Underline (Ctrl + U)" aria-label="Underline">
+              <span class="format-glyph-underline">U</span>
+            </button>
+            <!-- Strikethrough -->
+            <button id="btn-format-strike" class="fluent-format-icon-btn" title="Strikethrough" aria-label="Strikethrough">
+              <span class="format-glyph-strike">ab</span>
+            </button>
+            
+            <div class="toolbar-divider"></div>
+
+            <!-- Bullet List -->
+            <button id="btn-format-bullet" class="fluent-format-icon-btn" title="Bulleted list (Ctrl + Shift + 8)" aria-label="Bulleted list">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="9" y1="6" x2="20" y2="6"></line>
+                <line x1="9" y1="12" x2="20" y2="12"></line>
+                <line x1="9" y1="18" x2="20" y2="18"></line>
+                <circle cx="4" cy="6" r="1.5" fill="currentColor"></circle>
+                <circle cx="4" cy="12" r="1.5" fill="currentColor"></circle>
+                <circle cx="4" cy="18" r="1.5" fill="currentColor"></circle>
+              </svg>
+            </button>
+            <!-- Checklist -->
+            <button id="btn-format-check" class="fluent-format-icon-btn" title="To-do checklist (Ctrl + Shift + C)" aria-label="Checklist">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="5" width="14" height="14" rx="2"></rect>
+                <polyline points="7 12 10 15 17 8"></polyline>
+              </svg>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- Font Switcher (Aa) -->
+            <button id="btn-font-style" class="fluent-format-pill-btn" title="Toggle Clean Segoe UI / Casual font">
+              <span class="format-glyph-font">Aa</span>
+              <span id="font-style-label" class="font-style-text">Segoe UI</span>
+            </button>
+
+            <div class="toolbar-divider"></div>
+
+            <!-- Copy -->
+            <button id="btn-copy-note" class="fluent-format-icon-btn" title="Copy text to clipboard">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+            <!-- Export -->
+            <button id="btn-export-note" class="fluent-format-icon-btn" title="Export as Markdown (.md)">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </button>
+          </div>
+
+          <div id="note-body-input" class="win-note-textarea font-clean" contenteditable="true" spellcheck="false" role="textbox" aria-multiline="true" data-placeholder="Write your thoughts, to-dos, or notes here..."></div>
+          
+          <!-- In-Editor Floating Save Confirmation Toast -->
+          <div id="editor-save-toast" class="editor-save-toast hidden">
+            <span class="editor-save-toast-dot">●</span>
+            <span id="editor-save-toast-text">Saved to disk (notes.json)</span>
+          </div>
+        </div>
+
+        <!-- Windows 11 Bottom Control Strip -->
+        <div class="win-editor-footer">
+          <!-- Fluent Color Swatches (12 Aesthetic Soft Pastels) -->
+          <div class="fluent-palette-strip" role="radiogroup" aria-label="Select Note Color">
+            <button class="palette-swatch color-yellow" data-color="yellow" title="Buttercup Yellow" aria-label="Yellow"></button>
+            <button class="palette-swatch color-peach" data-color="peach" title="Apricot Peach" aria-label="Peach"></button>
+            <button class="palette-swatch color-coral" data-color="coral" title="Coral Blossom" aria-label="Coral"></button>
+            <button class="palette-swatch color-rose" data-color="rose" title="Blush Rose" aria-label="Rose"></button>
+            <button class="palette-swatch color-lilac" data-color="lilac" title="Sweet Lilac" aria-label="Lilac"></button>
+            <button class="palette-swatch color-lavender" data-color="lavender" title="Soft Lavender" aria-label="Lavender"></button>
+            <button class="palette-swatch color-blue" data-color="blue" title="Powder Sky Blue" aria-label="Blue"></button>
+            <button class="palette-swatch color-seafoam" data-color="seafoam" title="Ice Seafoam" aria-label="Seafoam"></button>
+            <button class="palette-swatch color-mint" data-color="mint" title="Matcha Mint" aria-label="Mint"></button>
+            <button class="palette-swatch color-pistachio" data-color="pistachio" title="Fresh Pistachio" aria-label="Pistachio"></button>
+            <button class="palette-swatch color-vanilla" data-color="vanilla" title="Vanilla Milk Tea" aria-label="Vanilla"></button>
+            <button class="palette-swatch color-slate" data-color="slate" title="Misty Slate" aria-label="Slate"></button>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="fluent-action-strip">
+            <button id="btn-delete-note" class="win-btn win-btn-danger" title="Delete Note">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              Delete
+            </button>
+            <button id="btn-manual-save-bottom" class="win-btn win-btn-save" title="Save Note to Disk (Ctrl + S)">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                <polyline points="7 3 7 8 15 8"></polyline>
+              </svg>
+              <span id="bottom-save-text">Save Note (Ctrl+S)</span>
+            </button>
+            <button id="btn-close-note" class="win-btn win-btn-primary" title="Close and Dock to Edge">
+              Close &amp; Dock
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Windows 11 Bottom Taskbar Simulator -->
+    <footer class="win-taskbar" id="win-taskbar">
+      <div class="taskbar-left">
+        <!-- Windows 11 Widgets Icon -->
+        <button class="taskbar-btn widget-btn" title="Windows Widgets">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="8" height="8" rx="1"></rect>
+            <rect x="13" y="3" width="8" height="8" rx="1"></rect>
+            <rect x="3" y="13" width="8" height="8" rx="1"></rect>
+            <rect x="13" y="13" width="8" height="8" rx="1"></rect>
+          </svg>
+          <span class="widget-temp">72°F Sunny</span>
+        </button>
+      </div>
+
+      <div class="taskbar-center">
+        <!-- Start Button -->
+        <button class="taskbar-btn win-start-btn" title="Start">
+          <svg viewBox="0 0 88 88" width="18" height="18">
+            <path fill="currentColor" d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529l.028 34.453L.028 75.48.016 46.135zM40.97 4.135L87.973 0v41.327l-47.003.3zm47.003 41.796V88L40.97 81.396V45.727z"/>
+          </svg>
+        </button>
+
+        <!-- Search Icon -->
+        <button class="taskbar-btn" title="Search">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- Task View -->
+        <button class="taskbar-btn" title="Task View">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2"></rect>
+            <line x1="9" y1="3" x2="9" y2="21"></line>
+          </svg>
+        </button>
+
+        <!-- File Explorer -->
+        <button class="taskbar-btn" title="File Explorer">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+          </svg>
+        </button>
+
+        <!-- Sticky Notes (Active / Running App indicator) -->
+        <button class="taskbar-btn active-app" id="taskbar-sticky-app" title="Sticky Notes (Docked on Right)">
+          <div class="taskbar-app-icon">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#ffd54f">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+            </svg>
+          </div>
+          <span class="app-running-indicator"></span>
+        </button>
+      </div>
+
+      <div class="taskbar-right">
+        <!-- System Tray -->
+        <div class="system-tray">
+          <button class="tray-btn" id="btn-tray-peek" title="Toggle all notes peek">
+            <span class="tray-notes-pill"><span id="tray-note-count">4</span> tabs</span>
+          </button>
+          <div class="tray-clock" id="taskbar-clock">
+            <span id="clock-time">09:41 PM</span>
+            <span id="clock-date">9/13/2026</span>
+          </div>
+          <!-- Desktop peek button (far right corner like Windows) -->
+          <div class="desktop-peek-bar" id="desktop-peek-bar" title="Peek at desktop"></div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

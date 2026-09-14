@@ -1,0 +1,14 @@
+[
+  {
+    "id": "sample-1",
+    "title": "Welcome to Sticky Notes",
+    "content": "[x] Pin notes to desktop\n[ ] Try pastel themes\n[ ] Use Ctrl + S to save",
+    "color": "yellow",
+    "tag": "general",
+    "isFavorite": false,
+    "isPinned": false,
+    "pinnedPos": { "x": 100, "y": 100 },
+    "fontStyle": "clean",
+    "updatedAt": 1789322068890
+  }
+]
