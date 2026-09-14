@@ -13,6 +13,12 @@ app_state.json
 *.log
 *.tmp
 
+# Packaging & distribution outputs
+dist/
+build/
+out/
+release/
+
 # Python cache & virtual environment
 __pycache__/
 *.py[cod]

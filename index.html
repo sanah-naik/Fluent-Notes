@@ -149,8 +149,21 @@
       <!-- Colored dots dynamically rendered from active notes -->
     </div>
 
-    <!-- Right Screen Border: Docked Tab Strip -->
+    <!-- Screen Border: Docked Tab Strip (Supports Left or Right Edge & Vertical Dragging) -->
     <aside class="win-edge-dock" id="win-edge-dock" aria-label="Docked Sticky Notes">
+      <!-- Dock Top Controls: Vertical Grip & Quick Collapse Arrow -->
+      <div class="dock-header" id="dock-header">
+        <div class="dock-grip-handle" id="dock-grip-handle" title="Drag up or down to reposition dock (Double-click to center)">
+          <div class="grip-bar-line"></div>
+          <div class="grip-bar-line"></div>
+        </div>
+        <button id="btn-dock-collapse" class="dock-collapse-btn" title="Hide/Tuck dock to click behind it [Ctrl+Alt+H]" aria-label="Collapse Dock">
+          <svg id="dock-collapse-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+
       <!-- Notes Tab List (Rendered dynamically) -->
       <div class="dock-tab-list" id="dock-tab-list">
         <!-- Rendered items like OFFICE, GROCERI, HOLD, SIDE-PRO -->
@@ -192,6 +205,14 @@
           </svg>
         </button>
 
+        <button id="btn-toggle-dock-side" class="win-fluent-fab mini" title="Switch Dock Side (Move to Left / Right Edge)" aria-label="Switch Dock Side">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="8 17 3 12 8 7"></polyline>
+            <polyline points="16 7 21 12 16 17"></polyline>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+          </svg>
+        </button>
+
         <button id="btn-dock-pin" class="win-fluent-fab mini active" title="Toggle Always On Top" aria-label="Always On Top">
           <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="12" y1="17" x2="12" y2="22"></line>
@@ -220,6 +241,14 @@
         </button>
       </div>
     </aside>
+
+    <!-- Collapsed Bezel Pill (Shown when user collapses dock so they can access window behind) -->
+    <div id="dock-expand-pill" class="dock-expand-pill hidden" title="Click or hover to reveal Sticky Notes Dock [Ctrl+Alt+H]">
+      <svg id="expand-pill-icon" viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      <span class="expand-pill-label">NOTES</span>
+    </div>
 
     <!-- Floating Slide-Out Peek Card (Shown when hovering over an edge tab) -->
     <div id="peek-card" class="peek-card-container hidden" role="tooltip">

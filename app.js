@@ -157,10 +157,15 @@
   const trayNoteCount = document.getElementById('tray-note-count');
   const taskbarStickyApp = document.getElementById('taskbar-sticky-app');
 
-  // --- Edge Dock Side Management (Default: LEFT side, toggleable to RIGHT) ---
-  let currentDockSide = localStorage.getItem('win11_sticky_dock_side') || 'left';
+  // --- Edge Dock Positioning & Collapse Management ---
+  let currentDockSide = localStorage.getItem('win11_sticky_dock_side') || 'right';
   const btnToggleDockSide = document.getElementById('btn-toggle-dock-side');
-  const dockSideGlyph = document.getElementById('dock-side-glyph');
+  const dockGripHandle = document.getElementById('dock-grip-handle');
+  const btnDockCollapse = document.getElementById('btn-dock-collapse');
+  const dockExpandPill = document.getElementById('dock-expand-pill');
+  const dockCollapseIcon = document.getElementById('dock-collapse-icon');
+  const expandPillIcon = document.getElementById('expand-pill-icon');
+  let isDockCollapsed = false;
 
   function applyDockSide(side) {
     currentDockSide = side;
@@ -171,16 +176,152 @@
       winEdgeDock.classList.remove('dock-left', 'dock-right');
       winEdgeDock.classList.add(`dock-${side}`);
     }
-    if (dockSideGlyph) {
-      dockSideGlyph.textContent = side === 'left' ? '⇸ Left' : '⇷ Right';
+    if (dockExpandPill) {
+      dockExpandPill.classList.remove('dock-left', 'dock-right');
+      dockExpandPill.classList.add(`dock-${side}`);
     }
     if (btnToggleDockSide) {
-      btnToggleDockSide.title = `Current Dock: ${side.toUpperCase()} (Click to dock to ${side === 'left' ? 'Right' : 'Left'})`;
+      btnToggleDockSide.title = side === 'left' ? 'Move Dock to Right Edge' : 'Move Dock to Left Edge';
     }
-    if (window.pywebview && window.pywebview.api && window.pywebview.api.toggle_dock_side) {
-      window.pywebview.api.toggle_dock_side(side);
+    if (dockCollapseIcon) {
+      dockCollapseIcon.innerHTML = side === 'left'
+        ? '<polyline points="15 18 9 12 15 6"></polyline>'
+        : '<polyline points="9 18 15 12 9 6"></polyline>';
+    }
+    if (expandPillIcon) {
+      expandPillIcon.innerHTML = side === 'left'
+        ? '<polyline points="9 18 15 12 9 6"></polyline>'
+        : '<polyline points="15 18 9 12 15 6"></polyline>';
     }
   }
+
+  function collapseDock() {
+    isDockCollapsed = true;
+    winEdgeDock.classList.add('collapsed');
+    hidePeekCard();
+    if (dockExpandPill) dockExpandPill.classList.remove('hidden');
+    if (window.electronAPI && window.electronAPI.isElectron) {
+      // Free the entire region behind the dock for 100% click-through access!
+      window.electronAPI.setIgnoreMouseEvents(true, { forward: true });
+    }
+    appState.isDockCollapsed = true;
+    saveAppState();
+    playFluentSound('click');
+  }
+
+  function expandDock() {
+    isDockCollapsed = false;
+    winEdgeDock.classList.remove('collapsed');
+    if (dockExpandPill) dockExpandPill.classList.add('hidden');
+    appState.isDockCollapsed = false;
+    saveAppState();
+    playFluentSound('click');
+  }
+
+  function toggleDockCollapse() {
+    if (isDockCollapsed) {
+      expandDock();
+    } else {
+      collapseDock();
+    }
+  }
+
+  // Vertical dragging of the edge dock
+  let isDraggingDock = false;
+  let dockDragStartY = 0;
+  let dockInitialTop = 0;
+
+  if (dockGripHandle) {
+    dockGripHandle.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      isDraggingDock = true;
+      dockDragStartY = e.clientY;
+      const rect = winEdgeDock.getBoundingClientRect();
+      dockInitialTop = rect.top;
+      document.body.style.userSelect = 'none';
+    });
+
+    // Double-click grip handle to reset to vertical center
+    dockGripHandle.addEventListener('dblclick', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      winEdgeDock.style.top = '50%';
+      winEdgeDock.style.transform = 'translateY(-50%)';
+      winEdgeDock.classList.remove('is-custom-top');
+      appState.dockTop = null;
+      saveAppState();
+      playFluentSound('click');
+    });
+  }
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDraggingDock) return;
+    e.preventDefault();
+    const deltaY = e.clientY - dockDragStartY;
+    let newTop = dockInitialTop + deltaY;
+    const minTop = 10;
+    const maxTop = Math.max(10, window.innerHeight - winEdgeDock.offsetHeight - 10);
+    newTop = Math.max(minTop, Math.min(newTop, maxTop));
+
+    winEdgeDock.style.top = `${newTop}px`;
+    winEdgeDock.style.transform = 'none';
+    winEdgeDock.classList.add('is-custom-top');
+  });
+
+  window.addEventListener('mouseup', () => {
+    if (!isDraggingDock) return;
+    isDraggingDock = false;
+    document.body.style.userSelect = '';
+    const rect = winEdgeDock.getBoundingClientRect();
+    appState.dockTop = Math.round(rect.top);
+    saveAppState();
+  });
+
+  if (btnDockCollapse) {
+    btnDockCollapse.addEventListener('click', (e) => {
+      e.stopPropagation();
+      collapseDock();
+    });
+  }
+
+  if (dockExpandPill) {
+    dockExpandPill.addEventListener('click', (e) => {
+      e.stopPropagation();
+      expandDock();
+    });
+    dockExpandPill.addEventListener('mouseenter', () => {
+      if (window.electronAPI && window.electronAPI.isElectron) {
+        window.electronAPI.setIgnoreMouseEvents(false);
+      }
+    });
+    dockExpandPill.addEventListener('mouseleave', () => {
+      if (isDockCollapsed && editorOverlay.classList.contains('hidden')) {
+        if (window.electronAPI && window.electronAPI.isElectron) {
+          window.electronAPI.setIgnoreMouseEvents(true, { forward: true });
+        }
+      }
+    });
+  }
+
+  if (btnToggleDockSide) {
+    btnToggleDockSide.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const newSide = currentDockSide === 'right' ? 'left' : 'right';
+      applyDockSide(newSide);
+      appState.dockSide = newSide;
+      saveAppState();
+      playFluentSound('click');
+    });
+  }
+
+  // Global hotkey Ctrl + Alt + H to toggle dock collapse/expand
+  window.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.altKey && (e.key === 'h' || e.key === 'H')) {
+      e.preventDefault();
+      toggleDockCollapse();
+    }
+  });
 
   function expandNativeWindow() {
     if (isNativeWidget && window.pywebview && window.pywebview.api && window.pywebview.api.expand_from_edge) {
@@ -291,6 +432,8 @@
     isMaximized: false,
     scrollPos: 0,
     dockSide: currentDockSide,
+    dockTop: null,
+    isDockCollapsed: false,
     isSoundEnabled: isSoundEnabled,
     currentTagFilter: 'all'
   };
@@ -299,6 +442,7 @@
     try {
       appState.activeNoteId = currentEditingId;
       appState.dockSide = currentDockSide;
+      appState.isDockCollapsed = isDockCollapsed;
       appState.isSoundEnabled = isSoundEnabled;
       appState.currentTagFilter = currentTagFilter;
       if (noteBodyInput) {
@@ -340,6 +484,23 @@
     // 2. Restore dock side
     if (appState.dockSide) {
       applyDockSide(appState.dockSide);
+    } else {
+      applyDockSide('right');
+    }
+
+    // 2b. Restore dock vertical position
+    if (typeof appState.dockTop === 'number') {
+      const minTop = 10;
+      const maxTop = Math.max(10, window.innerHeight - winEdgeDock.offsetHeight - 10);
+      const topVal = Math.max(minTop, Math.min(appState.dockTop, maxTop));
+      winEdgeDock.style.top = `${topVal}px`;
+      winEdgeDock.style.transform = 'none';
+      winEdgeDock.classList.add('is-custom-top');
+    }
+
+    // 2c. Restore collapsed state if user had collapsed it
+    if (appState.isDockCollapsed) {
+      collapseDock();
     }
 
     // 3. Restore filter if any
@@ -2255,12 +2416,29 @@
     if (window.electronAPI && window.electronAPI.isElectron) {
       if (winEdgeDock) {
         winEdgeDock.addEventListener('mouseenter', () => {
-          window.electronAPI.setIgnoreMouseEvents(false);
+          if (!isDockCollapsed) {
+            window.electronAPI.setIgnoreMouseEvents(false);
+          }
         });
         winEdgeDock.addEventListener('mouseleave', () => {
           if (editorOverlay.classList.contains('hidden')) {
             window.electronAPI.setIgnoreMouseEvents(true, { forward: true });
           }
+        });
+      }
+
+      if (window.electronAPI.onToggleCollapse) {
+        window.electronAPI.onToggleCollapse(() => {
+          toggleDockCollapse();
+        });
+      }
+
+      if (window.electronAPI.onToggleDockSide) {
+        window.electronAPI.onToggleDockSide(() => {
+          const newSide = currentDockSide === 'right' ? 'left' : 'right';
+          applyDockSide(newSide);
+          appState.dockSide = newSide;
+          saveAppState();
         });
       }
 

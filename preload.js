@@ -20,6 +20,12 @@ contextBridge.exposeInMainWorld('electronAPI', {
   onToggleSoundTrigger: (callback) => {
     ipcRenderer.on('trigger-toggle-sound', () => callback());
   },
+  onToggleCollapse: (callback) => {
+    ipcRenderer.on('trigger-toggle-collapse', () => callback());
+  },
+  onToggleDockSide: (callback) => {
+    ipcRenderer.on('trigger-toggle-dock-side', () => callback());
+  },
   saveNotesToDisk: (jsonString) => {
     return ipcRenderer.invoke('save-notes-to-disk', jsonString);
   },

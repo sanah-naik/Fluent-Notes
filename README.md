@@ -1,93 +1,178 @@
-# Sticky_Note
+# 📌 Sticky Notes · Windows 11 Fluent Edge-Docked Widget
 
+<p align="center">
+  <img src="sticky_notes_cute.png" alt="Sticky Notes Icon" width="100" height="100" />
+</p>
 
+<p align="center">
+  <strong>A modern, unobtrusive edge-docked sticky notes widget designed with Windows 11 Fluent Mica/Acrylic aesthetics.</strong><br>
+  <em>Pin to your screen edge, collapse for 100% click-through access, drag anywhere, and never lose your thoughts again.</em>
+</p>
 
-## Getting started
+<p align="center">
+  <img src="https://img.shields.io/badge/Platform-Windows%2011%20%7C%2010-0078D4?style=for-the-badge&logo=windows11&logoColor=white" alt="Windows" />
+  <img src="https://img.shields.io/badge/Framework-Electron-47848F?style=for-the-badge&logo=electron&logoColor=white" alt="Electron" />
+  <img src="https://img.shields.io/badge/Design-Fluent%20Acrylic-9B51E0?style=for-the-badge" alt="Fluent" />
+  <img src="https://img.shields.io/badge/License-MIT-success?style=for-the-badge" alt="License" />
+</p>
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+---
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## 🌟 Why This Widget?
 
-## Add your files
+Most desktop sticky note applications clutter your screen, cover important browser tabs, block window scrollbars, or look like relic software from 2005.
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+**Windows 11 Fluent Sticky Notes** solves this with an edge-docked ergonomic design:
+- 🪟 **Always Available, Never in the Way**: Sticks cleanly to your screen edge with smooth acrylic tabs.
+- 💨 **100% Click-Through Behind the Dock**: Collapse the dock with a single click or `Ctrl+Alt+H`. When collapsed, mouse clicks pass through completely to underlying browsers, documents, and games.
+- 🎯 **Total Positional Freedom**: Drag the dock vertically along the bezel to your sweet spot, or switch between **Right Edge** and **Left Edge** in 1 click.
+- 🎨 **Calming Pastel Aesthetics**: Carefully curated pastel colorways tailored for readability and visual calm.
+- 🔒 **Interactive Checklist & Password Vaults**: Checklists you can tick off interactively, and encrypted password cards with 1-click clipboard copy.
+- 🛡️ **Zero-Loss Auto-Save**: Instant atomic persistence with automated backup mirrors.
+
+---
+
+## ✨ Key Features
+
+### 1. 🪟 Unobstructed Screen Access
+- **1-Click Collapse (`Ctrl+Alt+H` or Chevron button)**: Instantly folds the dock into the screen bezel.
+- **Native Click-Through (`setIgnoreMouseEvents`)**: When collapsed, the window becomes transparent to mouse events—you can click buttons, highlight text, and scroll pages directly behind it without any obstruction.
+- **Micro Expand Pill**: A sleek, unobtrusive `NOTES` pill hugs the bezel. Hover or click anytime to expand back.
+
+### 2. ⇄ Move & Reposition Anywhere
+- **Vertical Grip Handle (`:::`)**: Click and drag up or down along the bezel to place the dock at any height.
+- **Double-Click Re-Center**: Double-click the grip handle to instantly snap the dock back to the screen center (`50%`).
+- **Edge Switcher (`⇄` Button)**: Swap between the **Right Edge** and **Left Edge** in one click (ideal for avoiding browser scrollbars or multi-monitor setups).
+- **Session Memory**: Dock position, screen edge, and collapsed state are remembered across restarts in `app_state.json`.
+
+### 3. 📝 Rich Note Types
+- **Standard Notes**: Clean typography with Markdown support, bullet lists, and fluid auto-sizing text areas.
+- **Interactive Checklists**: Todo lists with clickable checkboxes directly in the note preview card as well as the editor.
+- **Secure Password Vault**: Dedicated password cards with hidden asterisks, peek toggle (`👁️`), and instant 1-click copy with visual toast confirmation.
+
+### 4. 🎨 Curated Pastel Palette
+Choose from soothing, elegant pastel shades designed to look stunning on both Light and Dark Windows 11 themes:
+- 🌸 **Pastel Rose**
+- 💜 **Lavender Whisper**
+- 🌿 **Mint Serenity**
+- 🌊 **Sky Blue**
+- 🧈 **Buttercream Cream**
+- 🍑 **Peach Glow**
+- 🐘 **Slate Elegance**
+
+### 5. 🛡️ Rock-Solid Data Safety
+- **Continuous Auto-Save**: Saves silently while you type with debounced disk writes.
+- **Dual Persistence Mirror**: Primary `notes.json` is paired with an automatic `notes_backup.json` to prevent accidental corruption.
+- **Safe Note Deletion**: Integrated deletion buttons with confirmation safeguards.
+
+### 6. 🎛️ Windows Tray Integration & Global Shortcuts
+- Access options anytime from the Windows System Tray icon.
+- Toggle visibility globally with hotkeys.
+- Optional 1-click script to run automatically on Windows startup.
+
+---
+
+## ⌨️ Keyboard Shortcuts
+
+| Shortcut | Action |
+| :--- | :--- |
+| `Ctrl + Alt + H` | **Collapse / Expand Edge Dock** (Global hotkey) |
+| `Ctrl + S` | Force Save Active Note in Editor |
+| `Escape` | Close Editor Modal / Dismiss Dialogs |
+| `Ctrl + F` | Focus Search Bar |
+| `Double Click (:::)` | Reset Dock to Vertical Center |
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- [Node.js](https://nodejs.org/) (version 18 or higher recommended)
+- Windows 10 or Windows 11
+
+### Installation from Source
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/Sticky_Notes_Tool.git
+   cd Sticky_Notes_Tool
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the application:**
+   ```bash
+   npm start
+   ```
+
+---
+
+## 📦 Packaging & Distribution
+
+You can generate production-ready standalone Windows releases with zero external runtime requirements:
+
+### 1. Build Standalone Release & Compressed Archive (Recommended)
+Generates the complete portable Windows x64 binary directory (`dist/StickyNotes-win32-x64/`) and a distribution zip archive (`dist/StickyNotes-v1.0.0-win64.zip`):
+```bash
+npm run build
+```
+*(or `npm run package`)*
+
+Anyone on Windows 10/11 can simply extract the `.zip` and double-click **`Sticky Notes.exe`**—no Node.js, no terminal, and no installer needed!
+
+### 2. Output Artifacts in `dist/`
+- 📁 **`dist/StickyNotes-win32-x64/`**: Fully unpacked portable application folder ready to run.
+- 🗜️ **`dist/StickyNotes-v1.0.0-win64.zip`**: Compressed release package ready to upload to GitHub Releases, GitLab Releases, or share with users.
+
+---
+
+## 🚀 Auto-Start on Windows Boot (Optional)
+
+To have Sticky Notes start automatically when you log into Windows:
+- Double-click **`Enable-Auto-Start-On-Boot.bat`** in the project folder.
+- To disable it anytime, run **`Disable-Auto-Start-On-Boot.bat`**.
+
+---
+
+## 📂 Project Architecture
 
 ```
-cd existing_repo
-git remote add origin https://itgit.dsone.3ds.com/SNK21/sticky_note.git
-git branch -M main
-git push -uf origin main
+Sticky_Notes_Tool/
+├── index.html            # Main UI, acrylic edge dock & editor modal markup
+├── styles.css            # Windows 11 Fluent design system & micro-animations
+├── app.js                # Note state, drag mechanics, checklist rendering & UI logic
+├── main.js               # Electron main process, tray menu, window click-through
+├── preload.js            # Secure context bridge between Electron and UI
+├── package.json          # Project metadata, scripts, and build configurations
+├── sticky_notes_cute.ico # Application icon (Windows ICO)
+├── sticky_notes_cute.png # High-resolution application branding icon
+├── Enable-Auto-Start.bat # Convenience boot startup script
+├── notes.example.json    # Starter template for fresh installations
+└── .gitignore            # Git rules excluding personal notes and build artifacts
 ```
 
-## Integrate with your tools
+---
 
-* [Set up project integrations](https://itgit.dsone.3ds.com/SNK21/sticky_note/-/settings/integrations)
+## 🤝 Contributing
 
-## Collaborate with your team
+Contributions, suggestions, and feature requests are welcome!
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+---
 
-## Test and Deploy
+## 📄 License
 
-Use the built-in continuous integration in GitLab.
+Distributed under the **MIT License**. See `LICENSE` for more information.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+---
 
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+<p align="center">
+  Crafted with ❤️ for a clutter-free, beautiful desktop experience.
+</p>
