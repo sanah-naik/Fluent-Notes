@@ -2563,27 +2563,27 @@ body.dock-side-left #win-edge-dock .dock-footer {
   padding-right: 0 !important;
 }
 
-/* 3. Tab List Hugs Left Edge */
+/* 3. Tab List Hugs Left Edge (Mirrored with 20px padding for slide-out) */
 #win-edge-dock.dock-left .dock-tab-list,
 body.dock-side-left #win-edge-dock .dock-tab-list {
   padding-left: 0 !important;
-  padding-right: 18px !important;
+  padding-right: 20px !important;
   align-items: flex-start !important;
 }
 
-/* 4. FLIPPED TAB SHAPE: Flat on Left Bezel, Rounded on Right Facing Desktop */
+/* 4. EXACT MIRRORED TAB SHAPE: Flat on Left Bezel, 8px Rounded on Right Facing Desktop */
 #win-edge-dock.dock-left .dock-tab-item,
 body.dock-side-left #win-edge-dock .dock-tab-item,
 body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item,
 body.native-widget-mode.dock-side-left #win-edge-dock .dock-tab-item {
-  border-radius: 0 12px 12px 0 !important;
+  border-radius: 0 8px 8px 0 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
   border-left: none !important;
-  border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
-  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.22) !important;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2) !important;
   transform: translateX(0) !important;
 }
 
-/* 5. HOVER SLIDE-OUT: Pulls OUT to the Right toward the screen */
+/* 5. HOVER SLIDE-OUT: Pulls OUT to the Right toward the screen (Exact +8px Mirror) */
 #win-edge-dock.dock-left .dock-tab-item:hover,
 #win-edge-dock.dock-left .dock-tab-item.active-peek,
 body.dock-side-left #win-edge-dock .dock-tab-item:hover,
@@ -2592,11 +2592,11 @@ body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item:hover,
 body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item.active-peek,
 body.native-widget-mode.dock-side-left #win-edge-dock .dock-tab-item:hover,
 body.native-widget-mode.dock-side-left #win-edge-dock .dock-tab-item.active-peek {
-  transform: translateX(10px) !important;
-  box-shadow: 6px 4px 18px rgba(0, 0, 0, 0.32) !important;
+  transform: translateX(8px) !important;
+  box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.28) !important;
 }
 
-/* 6. FLIPPED VERTICAL TEXT: Perfectly upright reading for left-hand index tags */
+/* 6. FLIPPED VERTICAL TEXT: Upright, effortless reading for left-hand index tags */
 #win-edge-dock.dock-left .dock-tab-label,
 body.dock-side-left #win-edge-dock .dock-tab-label,
 body.native-widget-mode #win-edge-dock.dock-left .dock-tab-label,
@@ -2623,7 +2623,7 @@ body.dock-side-left #win-edge-dock .dock-tab-tag-indicator {
 body.dock-side-left #peek-card,
 body.native-widget-mode.dock-side-left #peek-card,
 #win-edge-dock.dock-left ~ #peek-card {
-  left: 54px !important;
+  left: 48px !important;
   right: auto !important;
   transform-origin: left center !important;
 }
@@ -2633,7 +2633,7 @@ body.native-widget-mode.dock-side-left #peek-card.hidden,
 #win-edge-dock.dock-left ~ #peek-card.hidden {
   opacity: 0 !important;
   pointer-events: none !important;
-  transform: translateX(-24px) scale(0.97) !important;
+  transform: translateX(-20px) scale(0.97) !important;
 }
 
 body.dock-side-left #peek-card:not(.hidden),
