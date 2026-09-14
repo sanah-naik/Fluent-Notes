@@ -1,0 +1,2700 @@
+/* ==========================================================================
+   WINDOWS 11 FLUENT DESIGN SYSTEM - STICKY NOTES TOOL
+   ========================================================================== */
+
+:root {
+  /* Core Windows 11 Typography */
+  --font-fluent: "Segoe UI Variable Text", "Segoe UI", -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+  --font-casual: "Segoe Print", "Caveat", cursive, sans-serif;
+  --font-mono: "Cascadia Code", "Consolas", monospace;
+
+  /* Windows 11 Fluent Motion Curves */
+  --ease-fluent: cubic-bezier(0.1, 0.9, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --duration-normal: 250ms;
+  --duration-fast: 150ms;
+
+  /* Fluent Color Accents (12 Soft, Aesthetic Pastel Sticky Note Hues) */
+  --color-yellow-bg: #fff1b8;
+  --color-yellow-border: #f2dc94;
+  --color-yellow-text: #3c3014;
+
+  --color-peach-bg: #fedcd0;
+  --color-peach-border: #f5bfae;
+  --color-peach-text: #4a2416;
+
+  --color-coral-bg: #fedfd6;
+  --color-coral-border: #f9c0b1;
+  --color-coral-text: #481e16;
+
+  --color-rose-bg: #fddde6;
+  --color-rose-border: #f8bece;
+  --color-rose-text: #491728;
+
+  --color-lilac-bg: #f4dff4;
+  --color-lilac-border: #e3bde5;
+  --color-lilac-text: #3e1b43;
+
+  --color-lavender-bg: #e8e0f8;
+  --color-lavender-border: #cfc1ee;
+  --color-lavender-text: #2d2047;
+
+  --color-blue-bg: #d7edfc;
+  --color-blue-border: #b3dbf8;
+  --color-blue-text: #14324a;
+
+  --color-seafoam-bg: #d7f5f0;
+  --color-seafoam-border: #b0eae2;
+  --color-seafoam-text: #113934;
+
+  --color-mint-bg: #d7f1e1;
+  --color-mint-border: #b5e1c4;
+  --color-mint-text: #173822;
+
+  --color-pistachio-bg: #e6f6d8;
+  --color-pistachio-border: #c8ecaf;
+  --color-pistachio-text: #223c14;
+
+  --color-vanilla-bg: #fdf5e6;
+  --color-vanilla-border: #ebdcc3;
+  --color-vanilla-text: #3b3022;
+
+  --color-slate-bg: #e5ebf3;
+  --color-slate-border: #c9d5e3;
+  --color-slate-text: #212d3b;
+}
+
+/* ==========================================================================
+   THEME DEFINITIONS: DARK (DEFAULT) & LIGHT
+   ========================================================================== */
+
+/* Windows 11 Dark Mica Theme */
+html[data-theme="dark"], body.theme-dark {
+  --bg-desktop: #11141a;
+  --surface-acrylic: rgba(36, 39, 46, 0.78);
+  --surface-mica: rgba(30, 32, 38, 0.88);
+  --surface-card: rgba(43, 47, 56, 0.92);
+  --surface-hover: rgba(255, 255, 255, 0.08);
+  --surface-active: rgba(255, 255, 255, 0.04);
+  --border-subtle: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text-primary: #f3f3f3;
+  --text-secondary: #a0a6b2;
+  --text-tertiary: #6b7280;
+  --accent-primary: #0078d4;
+  --accent-primary-hover: #1084d9;
+  --shadow-elevation-8: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-elevation-32: 0 18px 40px rgba(0, 0, 0, 0.55), 0 4px 12px rgba(0, 0, 0, 0.3);
+  --taskbar-bg: rgba(26, 29, 36, 0.84);
+  --topbar-bg: rgba(20, 22, 28, 0.75);
+}
+
+/* Windows 11 Light Mica Theme */
+html[data-theme="light"], body.theme-light {
+  --bg-desktop: #eef2f7;
+  --surface-acrylic: rgba(255, 255, 255, 0.82);
+  --surface-mica: rgba(248, 250, 252, 0.92);
+  --surface-card: rgba(255, 255, 255, 0.95);
+  --surface-hover: rgba(0, 0, 0, 0.05);
+  --surface-active: rgba(0, 0, 0, 0.03);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.14);
+  --text-primary: #1c2024;
+  --text-secondary: #5a6372;
+  --text-tertiary: #8b95a5;
+  --accent-primary: #0067b8;
+  --accent-primary-hover: #0078d4;
+  --shadow-elevation-8: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-elevation-32: 0 20px 48px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.08);
+  --taskbar-bg: rgba(240, 244, 250, 0.88);
+  --topbar-bg: rgba(245, 248, 252, 0.75);
+}
+
+/* ==========================================================================
+   RESET & DESKTOP ENVIRONMENT
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-fluent);
+  color: var(--text-primary);
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  user-select: none;
+  background-color: var(--bg-desktop);
+  transition: background-color var(--duration-normal) var(--ease-fluent);
+}
+
+/* Windows 11 Signature Bloom Wallpaper Simulation */
+.wallpaper-bloom-dark {
+  background: 
+    radial-gradient(circle at 85% 35%, rgba(139, 44, 255, 0.45) 0%, transparent 45%),
+    radial-gradient(circle at 65% 65%, rgba(0, 120, 212, 0.4) 0%, transparent 50%),
+    radial-gradient(circle at 25% 75%, rgba(224, 60, 138, 0.35) 0%, transparent 40%),
+    linear-gradient(135deg, #090c14 0%, #151928 50%, #0d111d 100%);
+  background-size: cover;
+}
+
+.wallpaper-bloom-light {
+  background: 
+    radial-gradient(circle at 80% 30%, rgba(190, 160, 255, 0.5) 0%, transparent 50%),
+    radial-gradient(circle at 60% 70%, rgba(135, 206, 250, 0.6) 0%, transparent 55%),
+    radial-gradient(circle at 20% 80%, rgba(255, 182, 193, 0.45) 0%, transparent 45%),
+    linear-gradient(135deg, #dce7f5 0%, #edf3fb 40%, #e3ebf7 100%);
+  background-size: cover;
+}
+
+.wallpaper-minimal-slate {
+  background: linear-gradient(145deg, #1c202a 0%, #0e1117 100%);
+}
+
+.desktop-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   TOP BAR (CONTROLS & DEMO UTILITIES)
+   ========================================================================== */
+
+.win-topbar {
+  height: 46px;
+  background: var(--topbar-bg);
+  backdrop-filter: blur(24px) saturate(160%);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 50;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.win-topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.win-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.win-logo-icon {
+  color: #0078d4;
+}
+
+.win-badge-pill {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: rgba(0, 120, 212, 0.16);
+  color: #0098ff;
+  padding: 2px 7px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 120, 212, 0.3);
+}
+
+.win-topbar-center {
+  flex: 1;
+  max-width: 380px;
+  margin: 0 20px;
+}
+
+.fluent-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.fluent-search-box .icon-search {
+  position: absolute;
+  left: 10px;
+  color: var(--text-secondary);
+  pointer-events: none;
+}
+
+.fluent-search-box input {
+  width: 100%;
+  height: 30px;
+  background: var(--surface-acrylic);
+  border: 1px solid var(--border-subtle);
+  border-bottom: 2px solid transparent;
+  border-radius: 6px;
+  padding: 0 32px 0 32px;
+  color: var(--text-primary);
+  font-family: var(--font-fluent);
+  font-size: 12px;
+  transition: all var(--duration-fast) var(--ease-fluent);
+  outline: none;
+}
+
+.fluent-search-box input:focus {
+  background: var(--surface-card);
+  border-color: var(--border-strong);
+  border-bottom-color: var(--accent-primary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.search-count-badge {
+  position: absolute;
+  right: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  background: var(--surface-hover);
+  color: var(--text-secondary);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.topbar-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fluent-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  font-family: var(--font-fluent);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-fluent);
+}
+
+.fluent-action-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--border-subtle);
+}
+
+.fluent-action-btn:active {
+  background: var(--surface-active);
+  transform: scale(0.98);
+}
+
+.fluent-action-btn .btn-text {
+  font-size: 11px;
+}
+
+/* ==========================================================================
+   DESKTOP WORKSPACE & PINNED NOTES
+   ========================================================================== */
+
+.desktop-workspace {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  padding: 24px;
+}
+
+.pinned-notes-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.pinned-note-card {
+  pointer-events: auto;
+  position: absolute;
+  width: 250px;
+  min-height: 180px;
+  border-radius: 8px;
+  padding: 14px;
+  box-shadow: var(--shadow-elevation-8);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  cursor: grab;
+  animation: popIn 200ms var(--ease-bounce);
+  transition: transform var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+}
+
+.pinned-note-card:active {
+  cursor: grabbing;
+  box-shadow: var(--shadow-elevation-32);
+}
+
+.pinned-note-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed rgba(0, 0, 0, 0.12);
+}
+
+.pinned-note-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.pinned-note-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.pinned-note-content {
+  font-family: var(--font-casual);
+  font-size: 16px;
+  line-height: 1.4;
+  flex: 1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Welcome Instruction Banner */
+.fluent-instruction-badge {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-acrylic);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 24px;
+  padding: 8px 16px;
+  box-shadow: var(--shadow-elevation-8);
+  z-index: 15;
+  transition: all var(--duration-normal) var(--ease-fluent);
+  animation: slideDown 350ms var(--ease-fluent);
+}
+
+.fluent-instruction-badge .instruction-icon {
+  color: #0078d4;
+  display: flex;
+}
+
+.fluent-instruction-badge .instruction-content {
+  display: flex;
+  flex-direction: column;
+  font-size: 12px;
+}
+
+.fluent-instruction-badge .instruction-content strong {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.fluent-instruction-badge .instruction-content span {
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+/* ==========================================================================
+   MINIMIZED EDGE STACK INDICATOR (FAR RIGHT BEZEL)
+   ========================================================================== */
+
+.edge-stack-indicator {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 0;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+  border-radius: 4px 0 0 4px;
+  z-index: 35;
+  pointer-events: none;
+  opacity: 0.8;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.indicator-dot {
+  width: 4px;
+  height: 14px;
+  border-radius: 2px 0 0 2px;
+  transition: all var(--duration-fast) ease;
+}
+
+/* ==========================================================================
+   RIGHT EDGE DOCKED TAB STRIP (CORE PRODUCT FEATURE)
+   ========================================================================== */
+
+.win-edge-dock {
+  position: fixed;
+  right: 0;
+  top: 90px;
+  bottom: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  z-index: 40;
+  pointer-events: none; /* children enable pointer events */
+  padding-right: 0;
+}
+
+.dock-tab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  overflow-x: visible;
+  padding-left: 20px;
+  scrollbar-width: none; /* Hide scrollbars for clean look */
+}
+
+.dock-tab-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Edge Tab Item */
+.dock-tab-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 108px;
+  border-radius: 8px 0 0 8px;
+  box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transform: translateX(0);
+  transition: transform var(--duration-normal) var(--ease-fluent),
+              width var(--duration-normal) var(--ease-fluent),
+              box-shadow var(--duration-normal) var(--ease-fluent);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: none;
+  user-select: none;
+}
+
+/* Vertical Text Label */
+.dock-tab-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: 94px;
+  line-height: 1;
+}
+
+/* Subtle pull out state when hovered */
+.dock-tab-item:hover,
+.dock-tab-item.active-peek {
+  transform: translateX(-8px);
+  box-shadow: -6px 6px 16px rgba(0, 0, 0, 0.28);
+}
+
+.dock-tab-item:active {
+  transform: translateX(-4px);
+}
+
+/* Dragging state for tab reordering */
+.dock-tab-item.dragging {
+  opacity: 0.4;
+  transform: scale(0.95);
+}
+
+.dock-tab-item.drag-over {
+  transform: translateX(-14px) !important;
+  box-shadow: -8px 8px 20px rgba(0, 120, 212, 0.45);
+  border-left: 3px solid #0078d4 !important;
+}
+
+/* Favorite indicator icon on tab */
+.dock-tab-favorite-dot {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.8;
+}
+
+/* Dock Footer with Floating Action Buttons */
+.dock-footer {
+  margin-top: 14px;
+  padding-right: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  position: relative;
+}
+
+/* Windows 11 Fluent Floating Add Button (+) */
+.win-fluent-fab {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-acrylic);
+  backdrop-filter: blur(20px);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-elevation-8);
+  transition: all var(--duration-fast) var(--ease-fluent);
+  outline: none;
+}
+
+.win-fluent-fab.mini {
+  width: 28px;
+  height: 28px;
+  opacity: 0.85;
+}
+
+.win-fluent-fab:hover {
+  background: var(--surface-card);
+  color: var(--accent-primary);
+  border-color: var(--border-strong);
+  transform: scale(1.08);
+  opacity: 1;
+  box-shadow: 0 6px 16px rgba(0, 120, 212, 0.35);
+}
+
+.win-fluent-fab.danger:hover {
+  color: #d83b01;
+  box-shadow: 0 4px 12px rgba(216, 59, 1, 0.35);
+  border-color: rgba(216, 59, 1, 0.4);
+}
+
+.win-fluent-fab:active {
+  transform: scale(0.94);
+}
+
+/* Quick Search & Filter Popover in Dock */
+.dock-search-popup {
+  position: absolute;
+  right: 46px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--surface-acrylic);
+  backdrop-filter: blur(28px);
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 8px 10px;
+  box-shadow: var(--shadow-elevation-8);
+  z-index: 50;
+  pointer-events: auto;
+  width: 215px;
+  animation: popIn 150ms var(--ease-fluent);
+}
+
+.search-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.search-input-row input {
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: var(--font-fluent);
+  font-size: 12px;
+  outline: none;
+  width: 100%;
+}
+
+/* Dock Tag Category Filter Chips */
+.dock-tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tag-chip {
+  font-family: var(--font-fluent);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-secondary);
+  cursor: pointer;
+  outline: none;
+  transition: all var(--duration-fast) var(--ease-fluent);
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.tag-chip:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.tag-chip.active {
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+}
+
+/* Color-coded Tag Filter Styles */
+.tag-chip.tag-work {
+  color: #38bdf8;
+  border-color: rgba(56, 189, 248, 0.3);
+  background: rgba(56, 189, 248, 0.08);
+}
+.tag-chip.tag-work:hover {
+  background: rgba(56, 189, 248, 0.16);
+}
+.tag-chip.tag-work.active {
+  background: rgba(56, 189, 248, 0.28);
+  border-color: #38bdf8;
+  color: #ffffff;
+}
+
+.tag-chip.tag-personal {
+  color: #34d399;
+  border-color: rgba(52, 211, 153, 0.3);
+  background: rgba(52, 211, 153, 0.08);
+}
+.tag-chip.tag-personal:hover {
+  background: rgba(52, 211, 153, 0.16);
+}
+.tag-chip.tag-personal.active {
+  background: rgba(52, 211, 153, 0.28);
+  border-color: #34d399;
+  color: #ffffff;
+}
+
+.tag-chip.tag-urgent {
+  color: #f87171;
+  border-color: rgba(248, 113, 113, 0.3);
+  background: rgba(248, 113, 113, 0.08);
+}
+.tag-chip.tag-urgent:hover {
+  background: rgba(248, 113, 113, 0.16);
+}
+.tag-chip.tag-urgent.active {
+  background: rgba(248, 113, 113, 0.28);
+  border-color: #f87171;
+  color: #ffffff;
+}
+
+.tag-chip.tag-ideas {
+  color: #fbbf24;
+  border-color: rgba(251, 191, 36, 0.3);
+  background: rgba(251, 191, 36, 0.08);
+}
+.tag-chip.tag-ideas:hover {
+  background: rgba(251, 191, 36, 0.16);
+}
+.tag-chip.tag-ideas.active {
+  background: rgba(251, 191, 36, 0.28);
+  border-color: #fbbf24;
+  color: #ffffff;
+}
+
+/* Tag Select inside Note Caption Bar */
+.win-tag-select {
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  color: inherit;
+  font-family: var(--font-fluent);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  outline: none;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-fluent);
+}
+
+.win-tag-select:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.win-tag-select:focus {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.3);
+}
+
+.win-tag-select option {
+  background: #252830;
+  color: #ffffff;
+  padding: 4px;
+}
+
+/* Tag Indicator Pill on Dock Tabs */
+.dock-tab-tag-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.dock-tab-tag-indicator.work { background: #38bdf8; }
+.dock-tab-tag-indicator.personal { background: #34d399; }
+.dock-tab-tag-indicator.urgent { background: #f87171; }
+.dock-tab-tag-indicator.ideas { background: #fbbf24; }
+
+/* Keyboard Navigation Active Focus state on Dock Tabs */
+.dock-tab-item.keyboard-focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: -1px;
+  transform: translateX(-16px) !important;
+  box-shadow: -6px 8px 20px rgba(0, 120, 212, 0.45);
+}
+
+/* Color-coded Peek Badges */
+.peek-category-badge.tag-badge-work {
+  background: rgba(56, 189, 248, 0.22) !important;
+  color: #0284c7 !important;
+  border: 1px solid rgba(56, 189, 248, 0.4) !important;
+}
+
+.peek-category-badge.tag-badge-personal {
+  background: rgba(52, 211, 153, 0.22) !important;
+  color: #059669 !important;
+  border: 1px solid rgba(52, 211, 153, 0.4) !important;
+}
+
+.peek-category-badge.tag-badge-urgent {
+  background: rgba(248, 113, 113, 0.25) !important;
+  color: #dc2626 !important;
+  border: 1px solid rgba(248, 113, 113, 0.4) !important;
+}
+
+.peek-category-badge.tag-badge-ideas {
+  background: rgba(251, 191, 36, 0.25) !important;
+  color: #d97706 !important;
+  border: 1px solid rgba(251, 191, 36, 0.4) !important;
+}
+
+/* ==========================================================================
+   SLIDE-OUT PEEK PREVIEW CARD (SMOOTH HORIZONTAL SLIDE ON HOVER)
+   ========================================================================== */
+
+.peek-card-container {
+  position: fixed;
+  right: 48px;
+  z-index: 45;
+  pointer-events: auto;
+  transition: opacity var(--duration-fast) ease,
+              transform var(--duration-fast) var(--ease-fluent);
+  filter: drop-shadow(0 12px 28px rgba(0, 0, 0, 0.32));
+}
+
+.peek-card-container.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(20px) scale(0.97);
+}
+
+.fluent-peek-card {
+  width: 270px;
+  min-height: 160px;
+  max-height: 320px;
+  border-radius: 10px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  transition: background-color var(--duration-fast) ease;
+}
+
+/* Small triangle pointer pointing to the tab */
+.fluent-peek-card::after {
+  content: "";
+  position: absolute;
+  right: -7px;
+  top: 36px;
+  width: 14px;
+  height: 14px;
+  background: inherit;
+  transform: rotate(45deg);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.peek-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.peek-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.peek-category-badge {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.peek-title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.peek-quick-actions {
+  display: flex;
+  gap: 2px;
+}
+
+.peek-card-body {
+  font-family: var(--font-casual);
+  font-size: 15px;
+  line-height: 1.38;
+  flex: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 180px;
+  padding-right: 4px;
+}
+
+/* Bullet & Checkbox item stylings in peek */
+.peek-bullet-line {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.peek-bullet-line.interactive-check {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background var(--duration-fast) ease;
+}
+
+.peek-bullet-line.interactive-check:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.peek-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  padding-top: 6px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.12);
+  font-size: 10px;
+  opacity: 0.75;
+}
+
+.peek-click-hint {
+  font-weight: 600;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ==========================================================================
+   WINDOWS 11 FLUENT NOTE EDITOR (MODAL DIALOG / WINDOW)
+   ========================================================================== */
+
+.editor-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 200ms ease;
+  transition: opacity var(--duration-fast) ease;
+}
+
+.editor-overlay.hidden {
+  display: none;
+  opacity: 0;
+}
+
+/* Windows 11 Fluent Window Frame */
+.fluent-window {
+  width: 440px;
+  min-height: 250px;
+  max-width: calc(100vw - 32px);
+  border-radius: 10px;
+  box-shadow: var(--shadow-elevation-32);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: winModalOpen 280ms var(--ease-bounce);
+  transition: background-color var(--duration-normal) var(--ease-fluent),
+              transform var(--duration-normal) var(--ease-fluent);
+  position: relative;
+}
+
+.fluent-window.is-positioned {
+  position: absolute !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* Windows 11 Caption Titlebar */
+.win-caption-bar {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  user-select: none;
+}
+
+.win-caption-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.win-window-icon {
+  display: flex;
+  opacity: 0.75;
+}
+
+.win-editable-title {
+  background: transparent;
+  border: none;
+  font-family: var(--font-fluent);
+  font-size: 13px;
+  font-weight: 600;
+  color: inherit;
+  outline: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: 170px;
+  transition: background var(--duration-fast) ease;
+}
+
+.win-editable-title:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.win-editable-title:focus {
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.2);
+}
+
+.win-caption-center {
+  display: flex;
+  align-items: center;
+}
+
+.win-save-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  opacity: 0.85;
+  font-weight: 500;
+  margin-right: 6px;
+  padding: 3px 7px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.05);
+  color: inherit;
+  user-select: none;
+  transition: all 180ms ease;
+}
+
+.win-save-badge .status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #107c41;
+  transition: background 200ms ease;
+  flex-shrink: 0;
+}
+
+.win-save-badge.saving .status-dot {
+  background: #f59e0b;
+  animation: pulse 800ms infinite;
+}
+
+/* Dedicated Manual Save Button in Caption Bar */
+.win-caption-btn.save-btn {
+  width: auto;
+  height: 26px;
+  padding: 0 10px;
+  gap: 5px;
+  border-radius: 4px;
+  background: rgba(16, 124, 65, 0.12);
+  border: 1px solid rgba(16, 124, 65, 0.35);
+  color: #107c41;
+  font-size: 11px;
+  font-weight: 600;
+  margin-right: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  transition: all 180ms cubic-bezier(0.1, 0.9, 0.2, 1);
+}
+
+.win-caption-btn.save-btn:hover {
+  background: rgba(16, 124, 65, 0.22);
+  border-color: rgba(16, 124, 65, 0.6);
+  transform: translateY(-1px);
+}
+
+.win-caption-btn.save-btn.saved-flash {
+  background: #107c41 !important;
+  color: #ffffff !important;
+  border-color: #107c41 !important;
+  box-shadow: 0 0 10px rgba(16, 124, 65, 0.45);
+  transform: scale(1.05);
+}
+
+/* Windows 11 Caption Controls (Top Right: Minimize, Maximize, Close) */
+.win-caption-controls {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.win-caption-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) ease;
+}
+
+.win-caption-btn.utility {
+  width: 32px;
+}
+
+.win-caption-btn:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.win-caption-btn:active {
+  background-color: rgba(0, 0, 0, 0.14);
+}
+
+/* Windows 11 Authentic Close Button Behavior (Red on hover) */
+.win-caption-btn.close:hover {
+  background-color: #e81123 !important;
+  color: #ffffff !important;
+}
+
+.win-caption-btn.close:active {
+  background-color: #bf101f !important;
+  color: #ffffff !important;
+}
+
+/* Note Editor Content Canvas */
+.win-editor-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.win-editor-microbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-bottom: 10px;
+  padding: 4px 6px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  cursor: grab;
+  user-select: none;
+}
+
+.win-editor-microbar:active {
+  cursor: grabbing;
+}
+
+.fluent-format-icon-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  opacity: 0.8;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-fluent);
+  outline: none;
+  padding: 0;
+}
+
+.fluent-format-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.07);
+  border-color: rgba(0, 0, 0, 0.08);
+  opacity: 1;
+}
+
+.fluent-format-icon-btn:active,
+.fluent-format-icon-btn.active {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.15);
+  opacity: 1;
+}
+
+.format-glyph-bold {
+  font-family: var(--font-fluent);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.format-glyph-italic {
+  font-family: var(--font-fluent);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.format-glyph-underline {
+  font-family: var(--font-fluent);
+  text-decoration: underline;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+}
+
+.format-glyph-strike {
+  font-family: var(--font-fluent);
+  text-decoration: line-through;
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.toolbar-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.12);
+  margin: 0 4px;
+}
+
+.fluent-format-pill-btn {
+  height: 26px;
+  padding: 0 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.25);
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-family: var(--font-fluent);
+  font-size: 11px;
+  font-weight: 500;
+  transition: all var(--duration-fast) var(--ease-fluent);
+  outline: none;
+}
+
+.fluent-format-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.45);
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+.format-glyph-font {
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: -0.04em;
+  opacity: 0.85;
+}
+
+.font-style-text {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.microbar-spacer {
+  flex: 1;
+}
+
+.char-count {
+  font-family: var(--font-fluent);
+  font-size: 11px;
+  font-weight: 500;
+  opacity: 0.65;
+  letter-spacing: 0.01em;
+  padding-right: 4px;
+}
+
+.win-note-textarea {
+  flex: 1;
+  min-height: 140px;
+  max-height: 420px;
+  overflow-y: auto;
+  border: none;
+  background: transparent;
+  color: inherit;
+  outline: none;
+  font-family: var(--font-fluent);
+  font-size: 14px;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  font-weight: 450;
+  padding: 2px 0;
+  user-select: text;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.win-note-textarea:empty::before {
+  content: attr(data-placeholder);
+  opacity: 0.45;
+  font-style: italic;
+  pointer-events: none;
+}
+
+.win-note-textarea.font-clean {
+  font-family: var(--font-fluent);
+  font-size: 14px;
+  font-weight: 450;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.win-note-textarea.font-casual {
+  font-family: var(--font-casual);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+/* Interactive Note Editor Lines - Clean, Natural, Compact Line Spacing */
+.editor-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  min-height: 20px;
+  line-height: 1.35;
+  margin-bottom: 2px;
+  cursor: text;
+  width: 100%;
+  box-sizing: border-box;
+  transition: margin-left var(--duration-fast) var(--ease-fluent);
+}
+
+.editor-line.empty-line {
+  min-height: 16px;
+  margin-bottom: 0px;
+}
+
+/* Bullet & Line Tab Indentation - Clean 16px steps */
+.editor-line[data-indent="1"] { margin-left: 16px; width: calc(100% - 16px); }
+.editor-line[data-indent="2"] { margin-left: 32px; width: calc(100% - 32px); }
+.editor-line[data-indent="3"] { margin-left: 48px; width: calc(100% - 48px); }
+.editor-line[data-indent="4"] { margin-left: 64px; width: calc(100% - 64px); }
+.editor-line[data-indent="5"] { margin-left: 80px; width: calc(100% - 80px); }
+.editor-line[data-indent="6"] { margin-left: 96px; width: calc(100% - 96px); }
+
+.editor-line-text {
+  flex: 1;
+  outline: none;
+  min-width: 60px;
+  min-height: 19px;
+  line-height: 1.35;
+  white-space: pre-wrap;
+  word-break: break-word;
+  cursor: text;
+  display: block;
+}
+
+/* Authentic Windows 11 Fluent Interactive Checkbox Button (Matches native Windows Sticky Notes) */
+.editor-checkbox-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  margin-right: 9px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  border-radius: 2px;
+  flex-shrink: 0;
+  outline: none;
+  user-select: none;
+  transition: transform var(--duration-fast) var(--ease-fluent);
+}
+
+.editor-checkbox-btn:hover {
+  transform: scale(1.08);
+}
+
+.editor-checkbox-btn:active {
+  transform: scale(0.94);
+}
+
+.checkbox-svg {
+  display: block;
+  overflow: visible;
+}
+
+.checkbox-box {
+  fill: transparent !important;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: stroke var(--duration-fast) ease;
+}
+
+.checkbox-tick {
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  opacity: 0;
+  transition: stroke-dashoffset 140ms var(--ease-fluent), opacity 100ms ease;
+}
+
+/* Checked state - box remains transparent outline, crisp checkmark appears */
+.checklist-item.checked .checkbox-box {
+  fill: transparent !important;
+  stroke: currentColor;
+}
+
+.checklist-item.checked .checkbox-tick {
+  stroke: currentColor;
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+
+/* Authentic Dark & Contrast styling for pastel notes */
+[class*="theme-note-"] .checkbox-box,
+[class*="theme-note-"] .checkbox-tick {
+  stroke: currentColor;
+}
+
+/* Strikethrough styling: clean horizontal strike through center of text */
+.editor-line-text.strike {
+  text-decoration: line-through;
+  text-decoration-thickness: 1.6px;
+  text-decoration-color: currentColor;
+  opacity: 0.92;
+  transition: all var(--duration-fast) ease;
+}
+
+/* Bullet Dot in Editor */
+.editor-bullet-dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 22px;
+  color: inherit;
+  opacity: 0.7;
+  font-weight: 700;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+/* Windows 11 Bottom Editor Footer (Palette & Action buttons) */
+.win-editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* Fluent Color Swatches (12 Aesthetic Pastel Shades - Single Sleek Row) */
+.fluent-palette-strip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: nowrap;
+}
+
+.palette-swatch {
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 0, 0, 0.14);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-bounce);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  outline: none;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.palette-swatch:hover {
+  transform: scale(1.22);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.palette-swatch.active {
+  transform: scale(1.22);
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.palette-swatch.color-yellow { background-color: var(--color-yellow-bg); }
+.palette-swatch.color-peach { background-color: var(--color-peach-bg); }
+.palette-swatch.color-coral { background-color: var(--color-coral-bg); }
+.palette-swatch.color-rose { background-color: var(--color-rose-bg); }
+.palette-swatch.color-lilac { background-color: var(--color-lilac-bg); }
+.palette-swatch.color-lavender { background-color: var(--color-lavender-bg); }
+.palette-swatch.color-blue { background-color: var(--color-blue-bg); }
+.palette-swatch.color-seafoam { background-color: var(--color-seafoam-bg); }
+.palette-swatch.color-mint { background-color: var(--color-mint-bg); }
+.palette-swatch.color-pistachio { background-color: var(--color-pistachio-bg); }
+.palette-swatch.color-vanilla { background-color: var(--color-vanilla-bg); }
+.palette-swatch.color-slate { background-color: var(--color-slate-bg); }
+
+/* Fluent Action Buttons (Bottom right) */
+.fluent-action-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.win-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 12px;
+  font-family: var(--font-fluent);
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 5px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-fluent);
+  outline: none;
+}
+
+.win-btn-primary {
+  background: rgba(0, 0, 0, 0.12);
+  color: inherit;
+  border-color: rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+}
+
+.win-btn-primary:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.win-btn-subtle {
+  background: transparent;
+  color: inherit;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.win-btn-subtle:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.win-btn-danger {
+  background: transparent;
+  color: #d83b01;
+  border-color: transparent;
+}
+
+.win-btn-danger:hover {
+  background: rgba(216, 59, 1, 0.12);
+}
+
+.win-btn-save {
+  background: #107c41;
+  color: #ffffff !important;
+  border-color: #0e6b37;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(16, 124, 65, 0.3);
+}
+
+.win-btn-save:hover {
+  background: #0e6b37;
+  box-shadow: 0 2px 6px rgba(16, 124, 65, 0.45);
+  transform: translateY(-1px);
+}
+
+.win-btn-save.saved-flash {
+  background: #28a745 !important;
+  border-color: #28a745 !important;
+  box-shadow: 0 0 12px rgba(40, 167, 69, 0.6) !important;
+  transform: scale(1.04);
+}
+
+/* In-Editor Floating Save Toast */
+.editor-save-toast {
+  position: absolute;
+  bottom: 56px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(16, 124, 65, 0.95);
+  backdrop-filter: blur(16px);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 100;
+  pointer-events: none;
+  animation: toastPop 220ms var(--ease-bounce);
+  transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.editor-save-toast.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(10px);
+  pointer-events: none;
+}
+
+.editor-save-toast-dot {
+  color: #86efac;
+  font-size: 10px;
+}
+
+@keyframes toastPop {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(12px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+/* ==========================================================================
+   NOTE COLOR SCHEMES (APPLIED DYNAMICALLY TO TABS, CARDS & MODAL)
+   ========================================================================== */
+
+/* Buttercup Yellow */
+.theme-note-yellow {
+  background-color: var(--color-yellow-bg) !important;
+  color: var(--color-yellow-text) !important;
+}
+
+/* Apricot Peach */
+.theme-note-peach {
+  background-color: var(--color-peach-bg) !important;
+  color: var(--color-peach-text) !important;
+}
+
+/* Coral Blossom */
+.theme-note-coral {
+  background-color: var(--color-coral-bg) !important;
+  color: var(--color-coral-text) !important;
+}
+
+/* Blush Rose */
+.theme-note-rose {
+  background-color: var(--color-rose-bg) !important;
+  color: var(--color-rose-text) !important;
+}
+
+/* Sweet Lilac */
+.theme-note-lilac {
+  background-color: var(--color-lilac-bg) !important;
+  color: var(--color-lilac-text) !important;
+}
+
+/* Soft Lavender */
+.theme-note-lavender {
+  background-color: var(--color-lavender-bg) !important;
+  color: var(--color-lavender-text) !important;
+}
+
+/* Powder Blue */
+.theme-note-blue {
+  background-color: var(--color-blue-bg) !important;
+  color: var(--color-blue-text) !important;
+}
+
+/* Ice Seafoam */
+.theme-note-seafoam {
+  background-color: var(--color-seafoam-bg) !important;
+  color: var(--color-seafoam-text) !important;
+}
+
+/* Mint Breeze */
+.theme-note-mint {
+  background-color: var(--color-mint-bg) !important;
+  color: var(--color-mint-text) !important;
+}
+
+/* Fresh Pistachio */
+.theme-note-pistachio {
+  background-color: var(--color-pistachio-bg) !important;
+  color: var(--color-pistachio-text) !important;
+}
+
+/* Vanilla Cream */
+.theme-note-vanilla {
+  background-color: var(--color-vanilla-bg) !important;
+  color: var(--color-vanilla-text) !important;
+}
+
+/* Misty Slate */
+.theme-note-slate {
+  background-color: var(--color-slate-bg) !important;
+  color: var(--color-slate-text) !important;
+}
+
+/* ==========================================================================
+   WINDOWS 11 TASKBAR (BOTTOM SIMULATOR)
+   ========================================================================== */
+
+.win-taskbar {
+  height: 48px;
+  background: var(--taskbar-bg);
+  backdrop-filter: blur(28px) saturate(180%);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  z-index: 50;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.taskbar-left, .taskbar-right {
+  min-width: 140px;
+  display: flex;
+  align-items: center;
+}
+
+.taskbar-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-fluent);
+  position: relative;
+}
+
+.taskbar-btn:hover {
+  background: var(--surface-hover);
+}
+
+.taskbar-btn:active {
+  transform: scale(0.92);
+}
+
+.taskbar-btn.active-app {
+  background: var(--surface-hover);
+}
+
+.app-running-indicator {
+  position: absolute;
+  bottom: 2px;
+  width: 16px;
+  height: 3px;
+  background: var(--accent-primary);
+  border-radius: 2px;
+}
+
+.win-start-btn {
+  color: #0078d4;
+}
+
+.taskbar-btn.widget-btn {
+  width: auto;
+  padding: 0 10px;
+  gap: 8px;
+  font-size: 11px;
+}
+
+.taskbar-center {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.system-tray {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.tray-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.tray-notes-pill {
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(0, 120, 212, 0.18);
+  color: #0098ff;
+  border: 1px solid rgba(0, 120, 212, 0.35);
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.tray-clock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 11px;
+  line-height: 1.2;
+  color: var(--text-primary);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.desktop-peek-bar {
+  width: 6px;
+  height: 36px;
+  border-left: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background 150ms ease;
+}
+
+.desktop-peek-bar:hover {
+  background: var(--surface-hover);
+}
+
+/* ==========================================================================
+   UTILITY & ANIMATIONS
+   ========================================================================== */
+
+.hidden {
+  display: none !important;
+}
+
+.fluent-icon-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--duration-fast) ease;
+}
+
+.fluent-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.fluent-icon-btn.danger:hover {
+  background: rgba(232, 17, 35, 0.15) !important;
+  color: #e81123 !important;
+}
+
+.fluent-icon-btn.small {
+  width: 20px;
+  height: 20px;
+  font-size: 11px;
+}
+
+@keyframes winModalOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -15px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ==========================================================================
+   NATIVE WINDOWS 11 DESKTOP WIDGET MODE (ELECTRON & OVERLAY)
+   ========================================================================== */
+
+body.native-widget-mode,
+html.native-widget-mode {
+  background: transparent !important;
+}
+
+body.native-widget-mode .desktop-container,
+body.native-widget-mode.wallpaper-bloom-dark,
+body.native-widget-mode.wallpaper-bloom-light,
+body.native-widget-mode.wallpaper-minimal-slate {
+  background: transparent !important;
+}
+
+/* Hide simulated desktop chrome when running as a real desktop widget */
+body.native-widget-mode .win-topbar,
+body.native-widget-mode .win-taskbar,
+body.native-widget-mode .fluent-instruction-badge {
+  display: none !important;
+}
+
+/* Flush right edge alignment for native desktop */
+body.native-widget-mode .win-edge-dock {
+  top: 40px;
+  bottom: 20px;
+}
+
+body.native-widget-mode .desktop-workspace {
+  pointer-events: none;
+}
+
+/* Floating exit button for web browser widget overlay */
+.widget-exit-pill {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  background: var(--surface-acrylic);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  border-radius: 20px;
+  padding: 4px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 999;
+  opacity: 0.35;
+  transition: opacity 150ms ease, transform 150ms ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.widget-exit-pill:hover {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+/* Fluent Undo Toast Notification */
+.fluent-toast {
+  position: fixed;
+  top: 16px;
+  right: 60px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--surface-card);
+  backdrop-filter: blur(28px);
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  border-radius: 8px;
+  padding: 8px 14px;
+  box-shadow: var(--shadow-elevation-32);
+  z-index: 1000;
+  animation: slideDown 250ms var(--ease-bounce);
+  pointer-events: auto;
+}
+
+.fluent-toast .toast-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.toast-action-btn {
+  background: #0078d4;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 150ms ease;
+}
+
+.toast-action-btn:hover {
+  opacity: 0.88;
+}
+
+/* Clickable Links inside Peek Card */
+.peek-link {
+  color: #0078d4;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  word-break: break-all;
+  transition: color 150ms ease;
+}
+
+.peek-link:hover {
+  color: #005a9e;
+}
+
+/* ==========================================================================
+   NATIVE DESKTOP WIDGET MODE (STANDALONE WINDOWS WIDGET)
+   ========================================================================== */
+
+.win-caption-btn-icon {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 4px;
+  opacity: 0.85;
+  transition: background var(--duration-fast) ease, opacity var(--duration-fast) ease;
+  -webkit-app-region: no-drag;
+}
+
+.win-caption-btn-icon:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.win-note-switcher-select {
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  font-family: var(--font-fluent);
+  font-size: 11px;
+  font-weight: 600;
+  color: inherit;
+  padding: 3px 6px;
+  outline: none;
+}
+
+.win-note-switcher-compact {
+  background: rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  font-family: var(--font-fluent);
+  font-size: 11px;
+  font-weight: 600;
+  color: inherit;
+  padding: 3px 4px;
+  outline: none;
+  cursor: pointer;
+  max-width: 80px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background var(--duration-fast) ease;
+  -webkit-app-region: no-drag;
+}
+
+.win-note-switcher-compact:hover {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.win-note-switcher-compact option {
+  background: #2b2b2b;
+  color: #ffffff;
+}
+
+/* Body and HTML in Native Desktop Widget Mode */
+html.native-widget-mode,
+body.native-widget-mode {
+  background: transparent !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  user-select: none;
+}
+
+html.native-widget-mode .desktop-container,
+body.native-widget-mode .desktop-container {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Suppress simulated website elements ONLY (Keep edge dock and notes active!) */
+html.native-widget-mode .win-topbar,
+body.native-widget-mode .win-topbar,
+html.native-widget-mode .win-taskbar,
+body.native-widget-mode .win-taskbar,
+html.native-widget-mode #desktop-workspace,
+body.native-widget-mode #desktop-workspace,
+html.native-widget-mode #instruction-badge,
+body.native-widget-mode #instruction-badge,
+html.native-widget-mode #pinned-notes-container,
+body.native-widget-mode #pinned-notes-container,
+html.native-widget-mode #edge-stack-indicator,
+body.native-widget-mode #edge-stack-indicator {
+  display: none !important;
+}
+
+/* ==========================================================================
+   NATIVE DESKTOP WIDGET OVERLAY (MATCHING REFERENCE VIDEO)
+   ========================================================================== */
+
+html.native-widget-mode,
+body.native-widget-mode {
+  background: transparent !important;
+  background-color: transparent !important;
+  overflow: hidden !important;
+}
+
+body.native-widget-mode .desktop-container,
+body.native-widget-mode .desktop-workspace {
+  background: transparent !important;
+  pointer-events: none;
+}
+
+/* Dock Position (Defaults to Right Edge, dynamically supports Left Edge & Vertical Dragging) */
+.win-edge-dock,
+body.native-widget-mode #win-edge-dock {
+  position: fixed !important;
+  right: 0 !important;
+  left: auto !important;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  z-index: 90 !important;
+  pointer-events: auto !important;
+  transition: transform 240ms cubic-bezier(0.1, 0.9, 0.2, 1), opacity 180ms ease;
+}
+
+/* Custom vertical position when user drags up/down */
+.win-edge-dock.is-custom-top,
+body.native-widget-mode #win-edge-dock.is-custom-top {
+  transform: none !important;
+}
+
+/* Dock Header Controls (Grip Handle & Collapse Arrow) */
+.dock-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  width: 100%;
+  padding-right: 4px;
+  margin-bottom: 8px;
+  user-select: none;
+  pointer-events: auto !important;
+}
+
+.dock-grip-handle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 26px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: grab;
+  transition: all 150ms ease;
+  pointer-events: auto !important;
+}
+
+.dock-grip-handle:hover {
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  transform: scale(1.06);
+}
+
+.dock-grip-handle:active {
+  cursor: grabbing;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.grip-bar-line {
+  width: 12px;
+  height: 2px;
+  background: #323130;
+  opacity: 0.65;
+  border-radius: 1px;
+}
+
+.dock-collapse-btn {
+  width: 26px;
+  height: 22px;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  color: #323130;
+  cursor: pointer !important;
+  transition: all 150ms ease;
+  pointer-events: auto !important;
+}
+
+.dock-collapse-btn svg,
+.dock-collapse-btn polyline {
+  pointer-events: none !important;
+}
+
+.dock-collapse-btn:hover {
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  transform: scale(1.08);
+}
+
+.dock-collapse-btn:active {
+  transform: scale(0.95);
+}
+
+
+/* Collapsed Dock: Completely hidden & click-through so user can access everything behind */
+#win-edge-dock.collapsed,
+.win-edge-dock.collapsed,
+body.native-widget-mode #win-edge-dock.collapsed,
+body.dock-side-left #win-edge-dock.collapsed,
+body.native-widget-mode.dock-side-left #win-edge-dock.collapsed,
+body #win-edge-dock.is-custom-top.collapsed {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateX(120%) !important;
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms !important;
+}
+
+#win-edge-dock.dock-left.collapsed,
+.win-edge-dock.dock-left.collapsed,
+body.dock-side-left #win-edge-dock.collapsed,
+body.native-widget-mode.dock-side-left #win-edge-dock.collapsed,
+body.dock-side-left #win-edge-dock.is-custom-top.collapsed {
+  transform: translateX(-120%) !important;
+}
+
+/* Collapsed Bezel Pill: Discreet handle flush with bezel */
+.dock-expand-pill {
+  position: fixed !important;
+  right: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  gap: 5px !important;
+  padding: 12px 6px !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.16) !important;
+  border-right: none !important;
+  border-radius: 8px 0 0 8px !important;
+  box-shadow: -2px 3px 12px rgba(0, 0, 0, 0.25) !important;
+  cursor: pointer !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  transition: all 180ms ease !important;
+  user-select: none !important;
+  font-family: var(--font-fluent) !important;
+  color: #323130 !important;
+}
+
+.dock-expand-pill:hover {
+  background: #ffffff !important;
+  box-shadow: -4px 4px 18px rgba(0, 0, 0, 0.35) !important;
+  transform: translateY(-50%) translateX(-4px) !important;
+}
+
+.dock-expand-pill.dock-left,
+body.dock-side-left .dock-expand-pill,
+body.native-widget-mode.dock-side-left .dock-expand-pill {
+  right: auto !important;
+  left: 0 !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
+  border-left: none !important;
+  border-radius: 0 8px 8px 0 !important;
+  box-shadow: 2px 3px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.dock-expand-pill.dock-left:hover,
+body.dock-side-left .dock-expand-pill:hover,
+body.native-widget-mode.dock-side-left .dock-expand-pill:hover {
+  transform: translateY(-50%) translateX(4px) !important;
+}
+
+.dock-expand-pill.hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.expand-pill-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.dock-tab-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 12px;
+  padding-right: 0;
+}
+
+.dock-tab-item {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  border-radius: 8px 0 0 8px;
+  border-right: none;
+  border-left: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: -3px 3px 10px rgba(0, 0, 0, 0.18);
+  transform: translateX(0);
+  cursor: pointer;
+  transition: transform 180ms cubic-bezier(0.1, 0.9, 0.2, 1), box-shadow 180ms ease;
+  pointer-events: auto;
+}
+
+.dock-tab-item:hover,
+.dock-tab-item.active-peek {
+  transform: translateX(-8px) !important;
+  box-shadow: -6px 6px 16px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Peek Card slides out from edge next to hovered tab */
+#peek-card {
+  position: fixed !important;
+  right: 48px !important;
+  left: auto !important;
+  transform-origin: right center !important;
+  z-index: 95 !important;
+  pointer-events: auto !important;
+}
+
+/* Floating Sticky Note Editor in screen center */
+.editor-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.32) !important;
+  backdrop-filter: blur(8px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 100 !important;
+  pointer-events: auto !important;
+}
+
+.editor-overlay.hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+/* Authentic Sticky Note Window */
+.fluent-window,
+body.native-widget-mode .fluent-window {
+  width: 440px !important;
+  min-height: 400px !important;
+  max-width: 90vw !important;
+  border-radius: 14px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  animation: winModalOpen 240ms cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative;
+  pointer-events: auto !important;
+}
+
+.fluent-window.is-positioned,
+body.native-widget-mode .fluent-window.is-positioned {
+  position: fixed !important;
+  margin: 0 !important;
+  transform: none !important;
+}
+
+/* Caption bar with dots */
+.win-caption-bar {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(16px);
+  user-select: none;
+  cursor: grab;
+}
+
+.win-caption-bar:active {
+  cursor: grabbing;
+}
+
+.win-caption-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.caption-dots-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.caption-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 150ms ease, opacity 150ms ease;
+  opacity: 0.85;
+}
+
+.caption-dot:hover {
+  transform: scale(1.18);
+  opacity: 1;
+}
+
+.caption-dot.dot-close {
+  background: #ff5f56;
+  border: 1px solid #e0443e;
+}
+
+.caption-dot.dot-minimize {
+  background: #ffbd2e;
+  border: 1px solid #dea123;
+}
+
+.win-editable-title {
+  background: transparent;
+  border: none;
+  font-family: var(--font-fluent);
+  font-size: 14px;
+  font-weight: 600;
+  color: inherit;
+  outline: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  flex: 0 1 auto;
+  max-width: 170px;
+  transition: background 150ms ease;
+}
+
+.win-editable-title:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.win-editable-title:focus {
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.win-caption-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.win-save-badge {
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.55);
+  font-weight: 500;
+}
+
+.win-editor-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  user-select: text;
+}
+
+.win-note-textarea {
+  flex: 1;
+  min-height: 240px;
+  padding: 16px 20px;
+  font-family: var(--font-casual);
+  font-size: 17px;
+  line-height: 1.5;
+  color: inherit;
+  outline: none;
+  overflow-y: auto;
+  border: none;
+  background: transparent;
+}
+
+.win-editor-footer {
+  height: 52px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   AUTHENTIC LEFT-HAND FLIPPED DOCK DESIGN (FLIPPED TAB SHAPES, TEXT & MOTIONS)
+   ========================================================================== */
+
+/* 1. Dock Container Flips to Left Bezel */
+#win-edge-dock.dock-left,
+body.dock-side-left #win-edge-dock,
+body.native-widget-mode #win-edge-dock.dock-left,
+body.native-widget-mode.dock-side-left #win-edge-dock {
+  left: 0 !important;
+  right: auto !important;
+  align-items: flex-start !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* 2. Dock Header & Footer Align to Left */
+#win-edge-dock.dock-left .dock-header,
+body.dock-side-left #win-edge-dock .dock-header {
+  justify-content: flex-start !important;
+  padding-left: 6px !important;
+  padding-right: 0 !important;
+}
+
+#win-edge-dock.dock-left .dock-footer,
+body.dock-side-left #win-edge-dock .dock-footer {
+  align-items: flex-start !important;
+  padding-left: 6px !important;
+  padding-right: 0 !important;
+}
+
+/* 3. Tab List Hugs Left Edge (Mirrored with 20px padding for slide-out) */
+#win-edge-dock.dock-left .dock-tab-list,
+body.dock-side-left #win-edge-dock .dock-tab-list {
+  padding-left: 0 !important;
+  padding-right: 20px !important;
+  align-items: flex-start !important;
+}
+
+/* 4. EXACT MIRRORED TAB SHAPE: Flat on Left Bezel, 8px Rounded on Right Facing Desktop */
+#win-edge-dock.dock-left .dock-tab-item,
+body.dock-side-left #win-edge-dock .dock-tab-item,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item,
+body.native-widget-mode.dock-side-left #win-edge-dock .dock-tab-item {
+  border-radius: 0 8px 8px 0 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  border-left: none !important;
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2) !important;
+  transform: translateX(0) !important;
+}
+
+/* 5. HOVER SLIDE-OUT: Pulls OUT to the Right toward the screen (Exact +8px Mirror) */
+#win-edge-dock.dock-left .dock-tab-item:hover,
+#win-edge-dock.dock-left .dock-tab-item.active-peek,
+body.dock-side-left #win-edge-dock .dock-tab-item:hover,
+body.dock-side-left #win-edge-dock .dock-tab-item.active-peek,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item:hover,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item.active-peek,
+body.native-widget-mode.dock-side-left #win-edge-dock .dock-tab-item:hover,
+body.native-widget-mode.dock-side-left #win-edge-dock .dock-tab-item.active-peek {
+  transform: translateX(8px) !important;
+  box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* 6. FLIPPED VERTICAL TEXT: Upright, effortless reading for left-hand index tags */
+#win-edge-dock.dock-left .dock-tab-label,
+body.dock-side-left #win-edge-dock .dock-tab-label,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-label,
+body.native-widget-mode.dock-side-left #win-edge-dock .dock-tab-label {
+  writing-mode: vertical-rl !important;
+  transform: rotate(0deg) !important;
+  letter-spacing: 1.2px !important;
+}
+
+/* 7. Tag Indicator Dot & Favorite Star on Left-Hand Tabs */
+#win-edge-dock.dock-left .dock-tab-favorite-dot,
+body.dock-side-left #win-edge-dock .dock-tab-favorite-dot {
+  left: auto !important;
+  right: 5px !important;
+}
+
+#win-edge-dock.dock-left .dock-tab-tag-indicator,
+body.dock-side-left #win-edge-dock .dock-tab-tag-indicator {
+  left: auto !important;
+  right: 4px !important;
+}
+
+/* 8. Peek Preview Card Opens to the Right of the Left-Hand Tabs */
+body.dock-side-left #peek-card,
+body.native-widget-mode.dock-side-left #peek-card,
+#win-edge-dock.dock-left ~ #peek-card {
+  left: 48px !important;
+  right: auto !important;
+  transform-origin: left center !important;
+}
+
+body.dock-side-left #peek-card.hidden,
+body.native-widget-mode.dock-side-left #peek-card.hidden,
+#win-edge-dock.dock-left ~ #peek-card.hidden {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transform: translateX(-20px) scale(0.97) !important;
+}
+
+body.dock-side-left #peek-card:not(.hidden),
+body.native-widget-mode.dock-side-left #peek-card:not(.hidden),
+#win-edge-dock.dock-left ~ #peek-card:not(.hidden) {
+  opacity: 1 !important;
+  transform: translateX(0) scale(1) !important;
+}
+
+/* 9. Search Popover Opens to the Right */
+body.dock-side-left #dock-search-popup,
+#win-edge-dock.dock-left #dock-search-popup {
+  left: 50px !important;
+  right: auto !important;
+}
+
+/* 10. Left-Edge Collapsed State & Bezel Expand Pill */
+#win-edge-dock.dock-left.collapsed {
+  transform: translateX(-80px) !important;
+}
+
+.dock-expand-pill.dock-left,
+body.dock-side-left .dock-expand-pill {
+  left: 0 !important;
+  right: auto !important;
+  border-left: none !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
+  border-radius: 0 8px 8px 0 !important;
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.dock-expand-pill.dock-left:hover,
+body.dock-side-left .dock-expand-pill:hover {
+  transform: translateY(-50%) translateX(6px) !important;
+}
+
+.dock-expand-pill.dock-left .expand-pill-label,
+body.dock-side-left .dock-expand-pill .expand-pill-label {
+  writing-mode: vertical-rl !important;
+  transform: rotate(0deg) !important;
+}
+
+
+
+

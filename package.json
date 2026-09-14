@@ -1,0 +1,74 @@
+{
+  "name": "fluent-notes",
+  "productName": "Fluent Notes",
+  "version": "1.0.0",
+  "description": "Windows 11 Fluent Design Edge-Docked Sticky Notes Widget",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "web": "python -m http.server 8080",
+    "build": "node scripts/build.js",
+    "package": "node scripts/build.js",
+    "package:dir": "electron-builder --dir",
+    "package:portable": "electron-builder --win portable",
+    "package:installer": "electron-builder --win nsis",
+    "dist": "node scripts/build.js"
+  },
+  "build": {
+    "appId": "com.stickynotes.fluent",
+    "productName": "Sticky Notes",
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "sticky_notes_cute.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Sticky Notes"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "app.js",
+      "index.html",
+      "styles.css",
+      "sticky_notes_cute.ico",
+      "sticky_notes_cute.png",
+      "tray_icon.ico",
+      "tray_icon.png",
+      "notes.example.json",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "keywords": [
+    "sticky-notes",
+    "windows-11",
+    "fluent-design",
+    "widget",
+    "electron"
+  ],
+  "author": "Sanah Naik",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^44.3.0",
+    "electron-builder": "^26.15.3"
+  }
+}

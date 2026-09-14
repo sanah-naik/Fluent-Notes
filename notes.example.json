@@ -1,0 +1,50 @@
+[
+  {
+    "id": "tutorial-welcome",
+    "title": "Welcome to Fluent Notes ✨",
+    "content": "Windows 11 Fluent Design edge-docked sticky notes!\n\n[x] Hover over any edge tab to peek preview\n[x] Click any tab to open rich-text editor\n[ ] Drag dock up/down using top grip ::: handle\n[ ] Discover shortcuts and customize colors!",
+    "color": "blue",
+    "tag": "guide",
+    "isFavorite": true,
+    "isPinned": false,
+    "pinnedPos": { "x": 200, "y": 150 },
+    "fontStyle": "clean",
+    "updatedAt": 1789322191000
+  },
+  {
+    "id": "tutorial-hotkeys",
+    "title": "Shortcuts & Hotkeys ⚡",
+    "content": "Boost your productivity with quick actions:\n\n• Ctrl + Alt + N : Create new sticky note\n• Ctrl + Alt + H : Tuck / Collapse dock to screen bezel\n• Click [ ⇄ ] : Switch dock between Left & Right edges\n• Double-click ::: grip handle to re-center vertically",
+    "color": "yellow",
+    "tag": "shortcuts",
+    "isFavorite": false,
+    "isPinned": false,
+    "pinnedPos": { "x": 220, "y": 170 },
+    "fontStyle": "clean",
+    "updatedAt": 1789322180000
+  },
+  {
+    "id": "tutorial-features",
+    "title": "Rich Text & Checklists 📝",
+    "content": "Everything you need for daily workflow:\n\n[x] Rich text formatting: Bold, Italic, Lists\n[x] Interactive task checklists with [ ] checkboxes\n[ ] Vibrant Fluent pastel colors (Yellow, Blue, Mint, Lavender, Peach, Slate)\n[ ] Fast search & tag filtering in dock header",
+    "color": "lavender",
+    "tag": "features",
+    "isFavorite": false,
+    "isPinned": false,
+    "pinnedPos": { "x": 240, "y": 190 },
+    "fontStyle": "clean",
+    "updatedAt": 1789322170000
+  },
+  {
+    "id": "tutorial-privacy",
+    "title": "100% Local & Private 🔒",
+    "content": "Your notes never leave your computer:\n\n• Fully offline desktop application\n• Automatically saved locally in %APPDATA%\\StickyNotes\n• Zero tracking, zero telemetry, zero cloud lock-in\n• Real-time backup protection",
+    "color": "mint",
+    "tag": "privacy",
+    "isFavorite": false,
+    "isPinned": false,
+    "pinnedPos": { "x": 260, "y": 210 },
+    "fontStyle": "clean",
+    "updatedAt": 1789322160000
+  }
+]
