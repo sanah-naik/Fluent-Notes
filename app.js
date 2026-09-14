@@ -103,6 +103,10 @@
   const btnCaptionMinimize = document.getElementById('btn-caption-minimize');
   const btnCaptionMaximize = document.getElementById('btn-caption-maximize');
   const btnCaptionClose = document.getElementById('btn-caption-close');
+  const btnEditorSizePresets = document.getElementById('btn-editor-size-presets');
+  const editorSizePopover = document.getElementById('editor-size-popover');
+  const btnResetNoteSize = document.getElementById('btn-reset-note-size');
+  const editorResizeGrip = document.getElementById('editor-resize-grip');
   const btnDeleteNote = document.getElementById('btn-delete-note');
   const btnCompleteNote = document.getElementById('btn-complete-note');
   const completeBtnText = document.getElementById('complete-btn-text');
@@ -464,6 +468,7 @@
   let appState = {
     activeNoteId: null,
     editorPos: null,
+    editorSize: null,
     isMaximized: false,
     scrollPos: 0,
     dockSide: currentDockSide,
@@ -538,14 +543,16 @@
       collapseDock();
     }
 
-    // 3. Restore filter if any
-    if (appState.currentTagFilter && appState.currentTagFilter !== 'all') {
+    // 3. Restore tag filter
+    if (appState.currentTagFilter && dockTagChips) {
       currentTagFilter = appState.currentTagFilter;
-      if (dockTagChips) {
-        dockTagChips.querySelectorAll('.tag-chip').forEach(c => {
-          c.classList.toggle('active', c.dataset.tag === currentTagFilter);
-        });
-      }
+      dockTagChips.querySelectorAll('.tag-chip').forEach(chip => {
+        if (chip.dataset.tag === currentTagFilter) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
       renderDockTabs();
     }
 
@@ -557,18 +564,24 @@
       const posY = Math.min(Math.max(10, appState.editorPos.y), maxY);
 
       editorWindow.classList.add('is-positioned');
-      editorWindow.style.position = 'absolute';
+      editorWindow.style.position = 'fixed';
       editorWindow.style.left = `${posX}px`;
       editorWindow.style.top = `${posY}px`;
       editorWindow.style.margin = '0';
       editorWindow.style.transform = 'none';
     }
 
-    // 5. Restore maximized size
+    // 5. Restore custom size or maximized size
+    if (appState.editorSize && typeof appState.editorSize.width === 'number' && typeof appState.editorSize.height === 'number') {
+      editorWindow.style.width = `${appState.editorSize.width}px`;
+      editorWindow.style.height = `${appState.editorSize.height}px`;
+    }
     if (appState.isMaximized) {
       isMaximized = true;
-      editorWindow.style.width = '640px';
-      editorWindow.style.minHeight = '480px';
+      const maxW = Math.min(920, window.innerWidth - 40);
+      const maxH = Math.min(720, window.innerHeight - 60);
+      editorWindow.style.width = `${maxW}px`;
+      editorWindow.style.height = `${maxH}px`;
     }
 
     // 6. RESTORE ACTIVE NOTE: If a note was open when quitting/restarting, reopen it immediately!
@@ -847,6 +860,10 @@
       card.className = `pinned-note-card theme-note-${note.color}`;
       card.style.left = `${note.pinnedPos?.x || 100}px`;
       card.style.top = `${note.pinnedPos?.y || 100}px`;
+      if (note.pinnedWidth && note.pinnedHeight) {
+        card.style.width = `${note.pinnedWidth}px`;
+        card.style.height = `${note.pinnedHeight}px`;
+      }
       card.dataset.id = note.id;
 
       card.innerHTML = `
@@ -858,10 +875,19 @@
           </div>
         </div>
         <div class="pinned-note-content">${formatContentToHtml(note.content)}</div>
+        <div class="pinned-resize-grip" title="Drag to resize pinned note">
+          <svg viewBox="0 0 16 16" width="10" height="10" fill="currentColor">
+            <circle cx="13" cy="13" r="1.3"/>
+            <circle cx="9" cy="13" r="1.3"/>
+            <circle cx="13" cy="9" r="1.3"/>
+          </svg>
+        </div>
       `;
 
       // Dragging functionality for desktop pinned notes
       setupNoteDrag(card, note);
+      // Resizing functionality for desktop pinned notes
+      setupPinnedNoteResize(card, note);
 
       card.querySelector('.btn-unpin').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -886,7 +912,7 @@
     let initialLeft = 0, initialTop = 0;
 
     elem.addEventListener('mousedown', (e) => {
-      if (e.target.closest('button')) return;
+      if (e.target.closest('button') || e.target.closest('.pinned-resize-grip')) return;
       isDragging = true;
       startX = e.clientX;
       startY = e.clientY;
@@ -911,6 +937,42 @@
           saveNotes();
           elem.style.zIndex = '10';
         }
+        window.removeEventListener('mousemove', onMouseMove);
+        window.removeEventListener('mouseup', onMouseUp);
+      };
+
+      window.addEventListener('mousemove', onMouseMove);
+      window.addEventListener('mouseup', onMouseUp);
+    });
+  }
+
+  // Resizing Logic for Pinned Notes
+  function setupPinnedNoteResize(elem, note) {
+    const grip = elem.querySelector('.pinned-resize-grip');
+    if (!grip) return;
+
+    grip.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+
+      let startX = e.clientX;
+      let startY = e.clientY;
+      let startW = elem.offsetWidth;
+      let startH = elem.offsetHeight;
+
+      const onMouseMove = (moveEvent) => {
+        const dx = moveEvent.clientX - startX;
+        const dy = moveEvent.clientY - startY;
+        const newW = Math.max(200, Math.min(800, startW + dx));
+        const newH = Math.max(140, Math.min(800, startH + dy));
+        elem.style.width = `${newW}px`;
+        elem.style.height = `${newH}px`;
+        note.pinnedWidth = newW;
+        note.pinnedHeight = newH;
+      };
+
+      const onMouseUp = () => {
+        saveNotes();
         window.removeEventListener('mousemove', onMouseMove);
         window.removeEventListener('mouseup', onMouseUp);
       };
@@ -1082,6 +1144,18 @@
         swatch.classList.remove('active');
       }
     });
+
+    // Restore size preference for this specific note or default
+    if (note.customSize && note.customSize.width && note.customSize.height) {
+      editorWindow.style.width = `${note.customSize.width}px`;
+      editorWindow.style.height = `${note.customSize.height}px`;
+    } else if (appState.editorSize && appState.editorSize.width && appState.editorSize.height) {
+      editorWindow.style.width = `${appState.editorSize.width}px`;
+      editorWindow.style.height = `${appState.editorSize.height}px`;
+    } else {
+      editorWindow.style.width = '460px';
+      editorWindow.style.height = '420px';
+    }
 
     updateWidgetNoteSwitcher(note.id);
     editorOverlay.classList.remove('hidden');
@@ -1987,21 +2061,224 @@
     }
   });
 
-  // Maximize toggle
+  // --- Maximize & Size Presets Management ---
   let isMaximized = false;
-  if (btnCaptionMaximize) {
-    btnCaptionMaximize.addEventListener('click', () => {
-      isMaximized = !isMaximized;
-      appState.isMaximized = isMaximized;
-      if (isMaximized) {
-        editorWindow.style.width = '640px';
-        editorWindow.style.minHeight = '480px';
-      } else {
-        editorWindow.style.width = '440px';
-        editorWindow.style.minHeight = '380px';
+  let preMaxState = null;
+
+  function toggleMaximizeEditor() {
+    isMaximized = !isMaximized;
+    appState.isMaximized = isMaximized;
+
+    if (isMaximized) {
+      const rect = editorWindow.getBoundingClientRect();
+      preMaxState = {
+        width: rect.width,
+        height: rect.height,
+        left: rect.left,
+        top: rect.top,
+        isPositioned: editorWindow.classList.contains('is-positioned')
+      };
+
+      const maxW = Math.min(920, window.innerWidth - 40);
+      const maxH = Math.min(720, window.innerHeight - 60);
+      editorWindow.style.width = `${maxW}px`;
+      editorWindow.style.height = `${maxH}px`;
+
+      // Center the maximized window
+      editorWindow.classList.add('is-positioned');
+      editorWindow.style.position = 'fixed';
+      editorWindow.style.left = `${Math.max(20, Math.round((window.innerWidth - maxW) / 2))}px`;
+      editorWindow.style.top = `${Math.max(20, Math.round((window.innerHeight - maxH) / 2))}px`;
+      editorWindow.style.margin = '0';
+      editorWindow.style.transform = 'none';
+
+      if (btnCaptionMaximize) {
+        btnCaptionMaximize.title = 'Restore Previous Size';
       }
-      saveAppState();
-      playFluentSound('click');
+    } else {
+      if (preMaxState) {
+        editorWindow.style.width = `${preMaxState.width}px`;
+        editorWindow.style.height = `${preMaxState.height}px`;
+        if (preMaxState.isPositioned) {
+          editorWindow.style.left = `${preMaxState.left}px`;
+          editorWindow.style.top = `${preMaxState.top}px`;
+        } else {
+          recenterEditor();
+        }
+      } else {
+        editorWindow.style.width = '460px';
+        editorWindow.style.height = '420px';
+        recenterEditor();
+      }
+
+      if (btnCaptionMaximize) {
+        btnCaptionMaximize.title = 'Maximize / Restore Size';
+      }
+    }
+
+    const finalRect = editorWindow.getBoundingClientRect();
+    appState.editorSize = { width: Math.round(finalRect.width), height: Math.round(finalRect.height) };
+    if (editorWindow.classList.contains('is-positioned')) {
+      appState.editorPos = { x: Math.round(finalRect.left), y: Math.round(finalRect.top) };
+    }
+    saveAppState();
+    playFluentSound('click');
+  }
+
+  if (btnCaptionMaximize) {
+    btnCaptionMaximize.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMaximizeEditor();
+    });
+  }
+
+  // --- Size Presets Flyout Menu ---
+  const sizePresets = {
+    compact: { width: 380, height: 340 },
+    standard: { width: 460, height: 420 },
+    large: { width: 640, height: 520 },
+    wide: { width: 760, height: 440 },
+    spacious: { width: 840, height: 640 }
+  };
+
+  function updateActiveSizePresetUI(width, height) {
+    let matchedKey = null;
+    for (const [key, dims] of Object.entries(sizePresets)) {
+      if (Math.abs(dims.width - width) < 25 && Math.abs(dims.height - height) < 25) {
+        matchedKey = key;
+        break;
+      }
+    }
+    document.querySelectorAll('.size-preset-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.preset === matchedKey);
+    });
+  }
+
+  function applySizePreset(presetKey) {
+    const preset = sizePresets[presetKey];
+    if (!preset) return;
+
+    editorWindow.style.width = `${preset.width}px`;
+    editorWindow.style.height = `${preset.height}px`;
+
+    // Ensure within screen bounds
+    const rect = editorWindow.getBoundingClientRect();
+    if (rect.right > window.innerWidth - 10 || rect.bottom > window.innerHeight - 10) {
+      const newLeft = Math.max(10, Math.min(rect.left, window.innerWidth - preset.width - 10));
+      const newTop = Math.max(10, Math.min(rect.top, window.innerHeight - preset.height - 10));
+      editorWindow.classList.add('is-positioned');
+      editorWindow.style.position = 'fixed';
+      editorWindow.style.left = `${newLeft}px`;
+      editorWindow.style.top = `${newTop}px`;
+    }
+
+    appState.editorSize = { width: preset.width, height: preset.height };
+    if (editorWindow.classList.contains('is-positioned')) {
+      const finalRect = editorWindow.getBoundingClientRect();
+      appState.editorPos = { x: Math.round(finalRect.left), y: Math.round(finalRect.top) };
+    }
+    isMaximized = false;
+    appState.isMaximized = false;
+    saveAppState();
+
+    if (currentEditingId) {
+      const note = notes.find(n => n.id === currentEditingId);
+      if (note) {
+        note.customSize = { width: preset.width, height: preset.height };
+        saveNotes();
+      }
+    }
+
+    updateActiveSizePresetUI(preset.width, preset.height);
+    if (editorSizePopover) editorSizePopover.classList.add('hidden');
+    playFluentSound('click');
+  }
+
+  if (btnEditorSizePresets && editorSizePopover) {
+    btnEditorSizePresets.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = editorSizePopover.classList.contains('hidden');
+      if (isHidden) {
+        const curW = editorWindow.offsetWidth;
+        const curH = editorWindow.offsetHeight;
+        updateActiveSizePresetUI(curW, curH);
+        editorSizePopover.classList.remove('hidden');
+        playFluentSound('click');
+      } else {
+        editorSizePopover.classList.add('hidden');
+      }
+    });
+
+    document.querySelectorAll('.size-preset-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applySizePreset(btn.dataset.preset);
+      });
+    });
+
+    if (btnResetNoteSize) {
+      btnResetNoteSize.addEventListener('click', (e) => {
+        e.stopPropagation();
+        applySizePreset('standard');
+        recenterEditor();
+      });
+    }
+
+    // Close size popover when clicking anywhere else
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('#editor-size-popover') && !e.target.closest('#btn-editor-size-presets')) {
+        editorSizePopover.classList.add('hidden');
+      }
+    });
+  }
+
+  // --- 8-Direction Drag-to-Resize Handles & Corner Grip Logic ---
+  let isResizingEditor = false;
+  let resizeDir = '';
+  let resizeStartX = 0;
+  let resizeStartY = 0;
+  let resizeStartWidth = 0;
+  let resizeStartHeight = 0;
+  let resizeStartLeft = 0;
+  let resizeStartTop = 0;
+
+  function startResizeEditor(e, dir) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    isResizingEditor = true;
+    resizeDir = dir;
+    resizeStartX = e.clientX;
+    resizeStartY = e.clientY;
+
+    const rect = editorWindow.getBoundingClientRect();
+    resizeStartWidth = rect.width;
+    resizeStartHeight = rect.height;
+    resizeStartLeft = rect.left;
+    resizeStartTop = rect.top;
+
+    editorWindow.classList.add('is-positioned');
+    editorWindow.style.position = 'fixed';
+    editorWindow.style.left = `${rect.left}px`;
+    editorWindow.style.top = `${rect.top}px`;
+    editorWindow.style.margin = '0';
+    editorWindow.style.transform = 'none';
+    editorWindow.style.transition = 'none';
+
+    document.body.style.userSelect = 'none';
+  }
+
+  // Bind 8 edge/corner resize handles
+  editorWindow.querySelectorAll('.win-resize-edge, .win-resize-corner').forEach(handle => {
+    handle.addEventListener('mousedown', (e) => {
+      startResizeEditor(e, handle.dataset.dir);
+    });
+  });
+
+  // Bind visible corner resize grip
+  if (editorResizeGrip) {
+    editorResizeGrip.addEventListener('mousedown', (e) => {
+      startResizeEditor(e, 'se');
     });
   }
 
@@ -2014,8 +2291,8 @@
   const editorMicrobar = document.querySelector('.win-editor-microbar');
 
   function startEditorDrag(e) {
-    // Don't initiate drag on buttons, inputs, select or caption dots
-    if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.caption-dot') || e.target.closest('select') || e.target.closest('.win-save-badge')) {
+    // Don't initiate drag on buttons, inputs, select, caption dots, or resize handles
+    if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.caption-dot') || e.target.closest('select') || e.target.closest('.win-save-badge') || e.target.closest('.win-resize-edge') || e.target.closest('.win-resize-corner') || e.target.closest('.win-resize-grip') || e.target.closest('.editor-size-popover')) {
       return;
     }
     isDraggingEditor = true;
@@ -2047,13 +2324,13 @@
   }
 
   if (editorCaptionBar) {
-    editorCaptionBar.title = 'Drag to move note · Double-click to re-center';
+    editorCaptionBar.title = 'Drag to move · Double-click to maximize/restore';
     editorCaptionBar.addEventListener('mousedown', startEditorDrag);
 
-    // Double-click titlebar to re-center in middle of screen
+    // Double-click titlebar to toggle maximize / restore
     editorCaptionBar.addEventListener('dblclick', (e) => {
-      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.caption-dot')) return;
-      recenterEditor();
+      if (e.target.closest('button') || e.target.closest('input') || e.target.closest('.caption-dot') || e.target.closest('.win-save-badge')) return;
+      toggleMaximizeEditor();
     });
   }
 
@@ -2066,6 +2343,58 @@
   }
 
   window.addEventListener('mousemove', (e) => {
+    // 1. Handle Window Resizing
+    if (isResizingEditor) {
+      e.preventDefault();
+      const dx = e.clientX - resizeStartX;
+      const dy = e.clientY - resizeStartY;
+
+      const minW = 320;
+      const maxW = Math.max(minW, window.innerWidth - 20);
+      const minH = 260;
+      const maxH = Math.max(minH, window.innerHeight - 20);
+
+      let newW = resizeStartWidth;
+      let newH = resizeStartHeight;
+      let newLeft = resizeStartLeft;
+      let newTop = resizeStartTop;
+
+      // Handle Horizontal Resize
+      if (resizeDir.includes('e')) {
+        newW = Math.min(maxW, Math.max(minW, resizeStartWidth + dx));
+      } else if (resizeDir.includes('w')) {
+        newW = Math.min(maxW, Math.max(minW, resizeStartWidth - dx));
+        newLeft = resizeStartLeft + (resizeStartWidth - newW);
+        if (newLeft < 10) {
+          newLeft = 10;
+          newW = resizeStartLeft + resizeStartWidth - 10;
+        }
+      }
+
+      // Handle Vertical Resize
+      if (resizeDir.includes('s')) {
+        newH = Math.min(maxH, Math.max(minH, resizeStartHeight + dy));
+      } else if (resizeDir.includes('n')) {
+        newH = Math.min(maxH, Math.max(minH, resizeStartHeight - dy));
+        newTop = resizeStartTop + (resizeStartHeight - newH);
+        if (newTop < 10) {
+          newTop = 10;
+          newH = resizeStartTop + resizeStartHeight - 10;
+        }
+      }
+
+      editorWindow.style.width = `${Math.round(newW)}px`;
+      editorWindow.style.height = `${Math.round(newH)}px`;
+      if (resizeDir.includes('w')) {
+        editorWindow.style.left = `${Math.round(newLeft)}px`;
+      }
+      if (resizeDir.includes('n')) {
+        editorWindow.style.top = `${Math.round(newTop)}px`;
+      }
+      return;
+    }
+
+    // 2. Handle Window Dragging
     if (!isDraggingEditor) return;
     e.preventDefault();
 
@@ -2085,6 +2414,33 @@
   });
 
   window.addEventListener('mouseup', () => {
+    // 1. Finish Resizing
+    if (isResizingEditor) {
+      isResizingEditor = false;
+      document.body.style.userSelect = '';
+      editorWindow.style.transition = '';
+
+      const rect = editorWindow.getBoundingClientRect();
+      const w = Math.round(rect.width);
+      const h = Math.round(rect.height);
+
+      appState.editorSize = { width: w, height: h };
+      appState.editorPos = { x: Math.round(rect.left), y: Math.round(rect.top) };
+      isMaximized = false;
+      appState.isMaximized = false;
+      saveAppState();
+
+      if (currentEditingId) {
+        const note = notes.find(n => n.id === currentEditingId);
+        if (note) {
+          note.customSize = { width: w, height: h };
+          saveNotes();
+        }
+      }
+      return;
+    }
+
+    // 2. Finish Dragging
     if (!isDraggingEditor) return;
     isDraggingEditor = false;
     document.body.style.userSelect = '';

@@ -207,6 +207,14 @@ function setupTray() {
         }
       },
       {
+        label: '🔄 Reload Widget',
+        click: () => {
+          if (mainWindow) {
+            mainWindow.reload();
+          }
+        }
+      },
+      {
         label: '👁️ Show / Hide Widget',
         click: () => {
           if (mainWindow) {

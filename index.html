@@ -302,7 +302,8 @@
           <div class="win-caption-left">
             <span class="caption-dots-group">
               <span class="caption-dot dot-close" id="btn-caption-close" title="Close"></span>
-              <span class="caption-dot dot-minimize" id="btn-caption-minimize" title="Minimize"></span>
+              <span class="caption-dot dot-minimize" id="btn-caption-minimize" title="Minimize / Dock"></span>
+              <span class="caption-dot dot-maximize" id="btn-caption-maximize" title="Maximize / Restore Size"></span>
             </span>
             <!-- Live editable title input -->
             <input type="text" id="note-title-input" class="win-editable-title" placeholder="Untitled note" maxlength="32" spellcheck="false">
@@ -313,6 +314,14 @@
               <span class="status-dot"></span>
               <span class="status-text">Saved</span>
             </span>
+            <button id="btn-editor-size-presets" class="win-caption-btn utility" title="Size Options & Presets" aria-label="Resize Note">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 3h6v6"></path>
+                <path d="M9 21H3v-6"></path>
+                <path d="M21 3l-7 7"></path>
+                <path d="M3 21l7-7"></path>
+              </svg>
+            </button>
             <button id="btn-favorite-note" class="win-caption-btn utility" title="Favorite / Star note" aria-label="Favorite">
               <svg id="icon-star-outline" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
@@ -335,6 +344,48 @@
             </button>
           </div>
         </div>
+
+        <!-- Size Presets Flyout Menu -->
+        <div id="editor-size-popover" class="editor-size-popover hidden">
+          <div class="size-popover-header">Window Size Presets</div>
+          <div class="size-presets-grid">
+            <button class="size-preset-btn" data-preset="compact">
+              <span class="preset-name">📱 Compact</span>
+              <span class="preset-dims">380 × 340</span>
+            </button>
+            <button class="size-preset-btn active" data-preset="standard">
+              <span class="preset-name">📝 Standard</span>
+              <span class="preset-dims">460 × 420</span>
+            </button>
+            <button class="size-preset-btn" data-preset="large">
+              <span class="preset-name">💻 Large</span>
+              <span class="preset-dims">640 × 520</span>
+            </button>
+            <button class="size-preset-btn" data-preset="wide">
+              <span class="preset-name">↔️ Wide</span>
+              <span class="preset-dims">760 × 440</span>
+            </button>
+            <button class="size-preset-btn" data-preset="spacious">
+              <span class="preset-name">🖥️ Spacious</span>
+              <span class="preset-dims">840 × 640</span>
+            </button>
+          </div>
+          <div class="size-popover-divider"></div>
+          <button class="size-preset-reset-btn" id="btn-reset-note-size">
+            <span>🔄 Reset to Default</span>
+          </button>
+          <div class="size-tip">💡 Tip: Drag any border or corner to resize freely!</div>
+        </div>
+
+        <!-- 8-Direction Drag-to-Resize Handles -->
+        <div class="win-resize-edge edge-n" data-dir="n"></div>
+        <div class="win-resize-edge edge-s" data-dir="s"></div>
+        <div class="win-resize-edge edge-e" data-dir="e"></div>
+        <div class="win-resize-edge edge-w" data-dir="w"></div>
+        <div class="win-resize-corner corner-nw" data-dir="nw"></div>
+        <div class="win-resize-corner corner-ne" data-dir="ne"></div>
+        <div class="win-resize-corner corner-sw" data-dir="sw"></div>
+        <div class="win-resize-corner corner-se" data-dir="se"></div>
 
         <!-- Note Editing Canvas -->
         <div class="win-editor-content">
@@ -452,6 +503,18 @@
             <button id="btn-close-note" class="win-btn win-btn-primary" title="Close and Dock to Edge">
               Close &amp; Dock
             </button>
+          </div>
+
+          <!-- Visible Bottom-Right Resize Grip Indicator -->
+          <div class="win-resize-grip" id="editor-resize-grip" title="Drag to resize note window">
+            <svg viewBox="0 0 16 16" width="11" height="11" fill="currentColor">
+              <circle cx="13" cy="13" r="1.3"/>
+              <circle cx="9" cy="13" r="1.3"/>
+              <circle cx="13" cy="9" r="1.3"/>
+              <circle cx="5" cy="13" r="1.3"/>
+              <circle cx="9" cy="9" r="1.3"/>
+              <circle cx="13" cy="5" r="1.3"/>
+            </svg>
           </div>
         </div>
 
