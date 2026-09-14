@@ -743,7 +743,7 @@
       const tab = document.createElement('div');
       tab.className = `dock-tab-item theme-note-${note.color}`;
       tab.dataset.id = note.id;
-      tab.title = `${note.title}${note.tag && note.tag !== 'none' ? ' [' + note.tag.toUpperCase() + ']' : ''} (Click to open)`;
+      tab.setAttribute('aria-label', `${note.title}${note.tag && note.tag !== 'none' ? ' [' + note.tag.toUpperCase() + ']' : ''}`);
 
       if (keyboardNavIndex === index) {
         tab.classList.add('keyboard-focus');

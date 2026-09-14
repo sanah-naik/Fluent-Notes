@@ -2623,6 +2623,7 @@ body.dock-side-left #win-edge-dock .dock-tab-tag-indicator {
 body.dock-side-left #peek-card,
 body.native-widget-mode.dock-side-left #peek-card,
 #win-edge-dock.dock-left ~ #peek-card {
+  left: 54px !important;
   right: auto !important;
   transform-origin: left center !important;
 }
