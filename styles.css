@@ -2180,11 +2180,12 @@ body.native-widget-mode #win-edge-dock.is-custom-top {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 4px;
+  gap: 5px;
   width: 100%;
   padding-right: 4px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   user-select: none;
+  pointer-events: auto !important;
 }
 
 .dock-grip-handle {
@@ -2193,109 +2194,64 @@ body.native-widget-mode #win-edge-dock.is-custom-top {
   align-items: center;
   justify-content: center;
   gap: 2px;
-  width: 22px;
-  height: 20px;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.08);
+  width: 26px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   cursor: grab;
-  transition: background 150ms ease;
+  transition: all 150ms ease;
+  pointer-events: auto !important;
 }
 
 .dock-grip-handle:hover {
-  background: rgba(0, 0, 0, 0.16);
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  transform: scale(1.06);
 }
 
 .dock-grip-handle:active {
   cursor: grabbing;
-  background: rgba(0, 0, 0, 0.24);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .grip-bar-line {
   width: 12px;
   height: 2px;
-  background: currentColor;
-  opacity: 0.55;
+  background: #323130;
+  opacity: 0.65;
   border-radius: 1px;
 }
 
 .dock-collapse-btn {
-  width: 22px;
-  height: 20px;
+  width: 26px;
+  height: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  border-radius: 4px;
-  background: rgba(0, 0, 0, 0.08);
-  color: inherit;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  color: #323130;
   cursor: pointer;
   transition: all 150ms ease;
+  pointer-events: auto !important;
 }
 
 .dock-collapse-btn:hover {
-  background: rgba(0, 0, 0, 0.16);
-  transform: scale(1.1);
+  background: #ffffff;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  transform: scale(1.08);
 }
 
-/* Left Edge Dock Support (Ultra-high specificity so it always moves to the left edge) */
-body.native-widget-mode #win-edge-dock.dock-left,
-body.native-widget-mode.dock-side-left #win-edge-dock,
-body.dock-side-left #win-edge-dock,
-#win-edge-dock.dock-left {
-  right: auto !important;
-  left: 0 !important;
-  align-items: flex-start !important;
+.dock-collapse-btn:active {
+  transform: scale(0.95);
 }
 
-#win-edge-dock.dock-left .dock-header,
-body.dock-side-left #win-edge-dock .dock-header {
-  justify-content: flex-start !important;
-  padding-left: 4px !important;
-  padding-right: 0 !important;
-}
-
-#win-edge-dock.dock-left .dock-footer,
-body.dock-side-left #win-edge-dock .dock-footer {
-  align-items: flex-start !important;
-  padding-left: 4px !important;
-  padding-right: 0 !important;
-}
-
-#win-edge-dock.dock-left .dock-tab-list,
-body.dock-side-left #win-edge-dock .dock-tab-list {
-  padding-left: 0 !important;
-  padding-right: 12px !important;
-}
-
-#win-edge-dock.dock-left .dock-tab-item,
-body.dock-side-left #win-edge-dock .dock-tab-item {
-  border-radius: 0 8px 8px 0 !important;
-  border-left: none !important;
-  border-right: 1px solid rgba(0, 0, 0, 0.14) !important;
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.18) !important;
-}
-
-#win-edge-dock.dock-left .dock-tab-item:hover,
-#win-edge-dock.dock-left .dock-tab-item.active-peek,
-body.dock-side-left #win-edge-dock .dock-tab-item:hover,
-body.dock-side-left #win-edge-dock .dock-tab-item.active-peek {
-  transform: translateX(8px) !important;
-  box-shadow: 6px 6px 16px rgba(0, 0, 0, 0.28) !important;
-}
-
-body.dock-side-left #peek-card,
-body.native-widget-mode.dock-side-left #peek-card,
-#win-edge-dock.dock-left ~ #peek-card {
-  left: 48px !important;
-  right: auto !important;
-  transform-origin: left center !important;
-}
-
-body.dock-side-left #dock-search-popup,
-#win-edge-dock.dock-left #dock-search-popup {
-  left: 46px !important;
-  right: auto !important;
-}
 
 /* Collapsed Dock: Completely hidden & click-through so user can access everything behind */
 #win-edge-dock.collapsed {
@@ -2574,6 +2530,131 @@ body.native-widget-mode .fluent-window.is-positioned {
 
 .hidden {
   display: none !important;
+}
+
+/* ==========================================================================
+   AUTHENTIC LEFT-HAND FLIPPED DOCK DESIGN (FLIPPED TAB SHAPES, TEXT & MOTIONS)
+   ========================================================================== */
+
+/* 1. Dock Container Flips to Left Bezel */
+#win-edge-dock.dock-left,
+body.dock-side-left #win-edge-dock,
+body.native-widget-mode #win-edge-dock.dock-left,
+body.native-widget-mode.dock-side-left #win-edge-dock {
+  left: 0 !important;
+  right: auto !important;
+  align-items: flex-start !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* 2. Dock Header & Footer Align to Left */
+#win-edge-dock.dock-left .dock-header,
+body.dock-side-left #win-edge-dock .dock-header {
+  justify-content: flex-start !important;
+  padding-left: 6px !important;
+  padding-right: 0 !important;
+}
+
+#win-edge-dock.dock-left .dock-footer,
+body.dock-side-left #win-edge-dock .dock-footer {
+  align-items: flex-start !important;
+  padding-left: 6px !important;
+  padding-right: 0 !important;
+}
+
+/* 3. Tab List Hugs Left Edge */
+#win-edge-dock.dock-left .dock-tab-list,
+body.dock-side-left #win-edge-dock .dock-tab-list {
+  padding-left: 0 !important;
+  padding-right: 18px !important;
+  align-items: flex-start !important;
+}
+
+/* 4. FLIPPED TAB SHAPE: Flat on Left Bezel, Rounded on Right Facing Desktop */
+#win-edge-dock.dock-left .dock-tab-item,
+body.dock-side-left #win-edge-dock .dock-tab-item,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item {
+  border-radius: 0 12px 12px 0 !important;
+  border-left: none !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.22) !important;
+  transform: translateX(0) !important;
+}
+
+/* 5. HOVER SLIDE-OUT: Pulls OUT to the Right toward the screen */
+#win-edge-dock.dock-left .dock-tab-item:hover,
+#win-edge-dock.dock-left .dock-tab-item.active-peek,
+body.dock-side-left #win-edge-dock .dock-tab-item:hover,
+body.dock-side-left #win-edge-dock .dock-tab-item.active-peek,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item:hover,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-item.active-peek {
+  transform: translateX(10px) !important;
+  box-shadow: 6px 4px 18px rgba(0, 0, 0, 0.32) !important;
+}
+
+/* 6. FLIPPED VERTICAL TEXT: Perfectly upright reading for left-hand index tags */
+#win-edge-dock.dock-left .dock-tab-label,
+body.dock-side-left #win-edge-dock .dock-tab-label,
+body.native-widget-mode #win-edge-dock.dock-left .dock-tab-label {
+  writing-mode: vertical-rl !important;
+  transform: rotate(0deg) !important;
+  letter-spacing: 1.2px !important;
+}
+
+/* 7. Tag Indicator Dot & Favorite Star on Left-Hand Tabs */
+#win-edge-dock.dock-left .dock-tab-favorite-dot,
+body.dock-side-left #win-edge-dock .dock-tab-favorite-dot {
+  left: auto !important;
+  right: 5px !important;
+}
+
+#win-edge-dock.dock-left .dock-tab-tag-indicator,
+body.dock-side-left #win-edge-dock .dock-tab-tag-indicator {
+  left: auto !important;
+  right: 4px !important;
+}
+
+/* 8. Peek Preview Card Opens to the Right of the Left-Hand Tabs */
+body.dock-side-left #peek-card,
+body.native-widget-mode.dock-side-left #peek-card,
+#win-edge-dock.dock-left ~ #peek-card {
+  left: 54px !important;
+  right: auto !important;
+  transform-origin: left center !important;
+}
+
+/* 9. Search Popover Opens to the Right */
+body.dock-side-left #dock-search-popup,
+#win-edge-dock.dock-left #dock-search-popup {
+  left: 50px !important;
+  right: auto !important;
+}
+
+/* 10. Left-Edge Collapsed State & Bezel Expand Pill */
+#win-edge-dock.dock-left.collapsed {
+  transform: translateX(-80px) !important;
+}
+
+.dock-expand-pill.dock-left,
+body.dock-side-left .dock-expand-pill {
+  left: 0 !important;
+  right: auto !important;
+  border-left: none !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.16) !important;
+  border-radius: 0 8px 8px 0 !important;
+  box-shadow: 3px 3px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.dock-expand-pill.dock-left:hover,
+body.dock-side-left .dock-expand-pill:hover {
+  transform: translateY(-50%) translateX(6px) !important;
+}
+
+.dock-expand-pill.dock-left .expand-pill-label,
+body.dock-side-left .dock-expand-pill .expand-pill-label {
+  writing-mode: vertical-rl !important;
+  transform: rotate(0deg) !important;
 }
 
 

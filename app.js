@@ -294,7 +294,21 @@
     saveAppState();
   });
 
+  const dockHeader = document.getElementById('dock-header');
+  if (dockHeader) {
+    dockHeader.addEventListener('mouseenter', () => {
+      if (window.electronAPI && window.electronAPI.isElectron) {
+        window.electronAPI.setIgnoreMouseEvents(false);
+      }
+    });
+  }
+
   if (btnDockCollapse) {
+    btnDockCollapse.addEventListener('mouseenter', () => {
+      if (window.electronAPI && window.electronAPI.isElectron) {
+        window.electronAPI.setIgnoreMouseEvents(false);
+      }
+    });
     btnDockCollapse.addEventListener('click', (e) => {
       e.stopPropagation();
       collapseDock();
