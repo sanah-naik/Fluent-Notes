@@ -6,68 +6,55 @@
 (() => {
   'use strict';
 
-  // --- Initial Seed Data (Inspired by the demonstration video) ---
-  // --- Initial Seed Data (All user notes preserved) ---
+  // --- Initial Seed Data (Interactive Tutorials for Fluent Notes) ---
   const DEFAULT_NOTES = [
     {
-      id: "note-1789322133698",
-      title: "IRS WebTM",
-      content: "[ ] User Manual\n[ ] TM - VT Documentation\n[ ] ORS integration",
-      color: "slate",
-      tag: "none",
-      isFavorite: false,
+      id: "tutorial-welcome",
+      title: "Welcome to Fluent Notes ✨",
+      content: "Windows 11 Fluent Design edge-docked sticky notes!\n\n[x] Hover over any edge tab to peek preview\n[x] Click any tab to open rich-text editor\n[ ] Drag dock up/down using top grip ::: handle\n[ ] Discover shortcuts and customize colors!",
+      color: "blue",
+      tag: "guide",
+      isFavorite: true,
       isPinned: false,
       pinnedPos: { x: 200, y: 150 },
       fontStyle: "clean",
-      updatedAt: 1789322191036
+      updatedAt: 1789322191000
     },
     {
-      id: "note-1789321976227",
-      title: "Side Projects",
-      content: "",
-      color: "lavender",
-      tag: "none",
-      isFavorite: false,
-      isPinned: false,
-      pinnedPos: { x: 200, y: 150 },
-      fontStyle: "clean",
-      updatedAt: 1789322048885
-    },
-    {
-      id: "note-1789321959689",
-      title: "ADA",
-      content: "[ ] AIX Basic Commands\n[ ] AIX Apache Httpd Server Installation\n[ ] AIX IBM Installation",
-      color: "slate",
-      tag: "none",
-      isFavorite: false,
-      isPinned: false,
-      pinnedPos: { x: 200, y: 150 },
-      fontStyle: "clean",
-      updatedAt: 1789322244339
-    },
-    {
-      id: "note-1789321948854",
-      title: "IRS E-Plan",
-      content: "",
+      id: "tutorial-hotkeys",
+      title: "Shortcuts & Hotkeys ⚡",
+      content: "Boost your productivity with quick actions:\n\n• Ctrl + Alt + N : Create new sticky note\n• Ctrl + Alt + H : Tuck / Collapse dock to screen bezel\n• Click [ ⇄ ] : Switch dock between Left & Right edges\n• Double-click ::: grip handle to re-center vertically",
       color: "yellow",
-      tag: "none",
+      tag: "shortcuts",
       isFavorite: false,
       isPinned: false,
-      pinnedPos: { x: 200, y: 150 },
+      pinnedPos: { x: 220, y: 170 },
       fontStyle: "clean",
-      updatedAt: 1789322132142
+      updatedAt: 1789322180000
     },
     {
-      id: "note-password",
-      title: "Password",
-      content: "IRS VPN:\n  sanah-3ds\n  s@!ari@2028\nMSIL VPN:\n  Dassault_Snaik@maruti.co.in\n  Creta@7890123456",
-      color: "peach",
-      tag: "personal",
+      id: "tutorial-features",
+      title: "Rich Text & Checklists 📝",
+      content: "Everything you need for daily workflow:\n\n[x] Rich text formatting: Bold, Italic, Lists\n[x] Interactive task checklists with [ ] checkboxes\n[ ] Vibrant Fluent pastel colors (Yellow, Blue, Mint, Lavender, Peach, Slate)\n[ ] Fast search & tag filtering in dock header",
+      color: "lavender",
+      tag: "features",
       isFavorite: false,
       isPinned: false,
-      pinnedPos: { x: 100, y: 100 },
+      pinnedPos: { x: 240, y: 190 },
       fontStyle: "clean",
-      updatedAt: 1789322068890
+      updatedAt: 1789322170000
+    },
+    {
+      id: "tutorial-privacy",
+      title: "100% Local & Private 🔒",
+      content: "Your notes never leave your computer:\n\n• Fully offline desktop application\n• Automatically saved locally in %APPDATA%\\StickyNotes\n• Zero tracking, zero telemetry, zero cloud lock-in\n• Real-time backup protection",
+      color: "mint",
+      tag: "privacy",
+      isFavorite: false,
+      isPinned: false,
+      pinnedPos: { x: 260, y: 210 },
+      fontStyle: "clean",
+      updatedAt: 1789322160000
     }
   ];
 

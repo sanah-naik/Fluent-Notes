@@ -1,4 +1,4 @@
-# 📌 Sticky Notes · Windows 11 Fluent Edge-Docked Widget
+# 📌 Fluent Notes · Windows 11 Edge-Docked Sticky Notes Widget
 
 <p align="center">
   <img src="sticky_notes_cute.png" alt="Sticky Notes Icon" width="100" height="100" />
@@ -94,8 +94,8 @@ Choose from soothing, elegant pastel shades designed to look stunning on both Li
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/Sticky_Notes_Tool.git
-   cd Sticky_Notes_Tool
+   git clone https://github.com/sanah-naik/Fluent-Notes.git
+   cd Fluent-Notes
    ```
 
 2. **Install dependencies:**

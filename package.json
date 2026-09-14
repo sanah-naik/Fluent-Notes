@@ -1,8 +1,8 @@
 {
-  "name": "windows11-fluent-sticky-notes",
-  "productName": "Sticky Notes",
+  "name": "fluent-notes",
+  "productName": "Fluent Notes",
   "version": "1.0.0",
-  "description": "Windows 11 Fluent Edge-Docked Sticky Notes Widget",
+  "description": "Windows 11 Fluent Design Edge-Docked Sticky Notes Widget",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -65,7 +65,7 @@
     "widget",
     "electron"
   ],
-  "author": "SNK21",
+  "author": "Sanah Naik",
   "license": "MIT",
   "devDependencies": {
     "electron": "^44.3.0",
