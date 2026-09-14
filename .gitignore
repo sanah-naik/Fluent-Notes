@@ -13,6 +13,14 @@ app_state.json
 *.log
 *.tmp
 
+# Media & screen recordings
+*.mp4
+*.mkv
+*.webm
+*.mov
+*.avi
+
+
 # Packaging & distribution outputs
 dist/
 build/
